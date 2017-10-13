@@ -1,0 +1,9 @@
+N:\Projects\QuickJsonSerialize\QuickJsonSerialize\bin\Debug\QuickJsonSerialize.exe.config
+N:\Projects\QuickJsonSerialize\QuickJsonSerialize\obj\Debug\QuickJsonSerialize.csprojResolveAssemblyReference.cache
+N:\Projects\QuickJsonSerialize\QuickJsonSerialize\obj\Debug\QuickJsonSerialize.Properties.Resources.resources
+N:\Projects\QuickJsonSerialize\QuickJsonSerialize\obj\Debug\QuickJsonSerialize.csproj.GenerateResource.Cache
+N:\Projects\QuickJsonSerialize\QuickJsonSerialize\obj\Debug\QuickJsonSerialize.Form1.resources
+N:\Projects\QuickJsonSerialize\QuickJsonSerialize\bin\Debug\QuickJsonSerialize.exe
+N:\Projects\QuickJsonSerialize\QuickJsonSerialize\bin\Debug\QuickJsonSerialize.pdb
+N:\Projects\QuickJsonSerialize\QuickJsonSerialize\obj\Debug\QuickJsonSerialize.exe
+N:\Projects\QuickJsonSerialize\QuickJsonSerialize\obj\Debug\QuickJsonSerialize.pdb
