@@ -7,3 +7,13 @@ N:\Projects\QuickJsonSerialize\QuickJsonSerialize\bin\Debug\QuickJsonSerialize.e
 N:\Projects\QuickJsonSerialize\QuickJsonSerialize\bin\Debug\QuickJsonSerialize.pdb
 N:\Projects\QuickJsonSerialize\QuickJsonSerialize\obj\Debug\QuickJsonSerialize.exe
 N:\Projects\QuickJsonSerialize\QuickJsonSerialize\obj\Debug\QuickJsonSerialize.pdb
+I:\Desktop\HistamcomVB\ABJsonSerializer\QuickJsonSerialize\bin\Debug\QuickJsonSerialize.exe.config
+I:\Desktop\HistamcomVB\ABJsonSerializer\QuickJsonSerialize\bin\Debug\QuickJsonSerialize.exe
+I:\Desktop\HistamcomVB\ABJsonSerializer\QuickJsonSerialize\bin\Debug\QuickJsonSerialize.pdb
+I:\Desktop\HistamcomVB\ABJsonSerializer\QuickJsonSerialize\obj\Debug\QuickJsonSerialize.csprojResolveAssemblyReference.cache
+I:\Desktop\HistamcomVB\ABJsonSerializer\QuickJsonSerialize\obj\Debug\QuickJsonSerialize.Form1.resources
+I:\Desktop\HistamcomVB\ABJsonSerializer\QuickJsonSerialize\obj\Debug\QuickJsonSerialize.Properties.Resources.resources
+I:\Desktop\HistamcomVB\ABJsonSerializer\QuickJsonSerialize\obj\Debug\QuickJsonSerialize.csproj.GenerateResource.Cache
+I:\Desktop\HistamcomVB\ABJsonSerializer\QuickJsonSerialize\obj\Debug\QuickJsonSerialize.csproj.CoreCompileInputs.cache
+I:\Desktop\HistamcomVB\ABJsonSerializer\QuickJsonSerialize\obj\Debug\QuickJsonSerialize.exe
+I:\Desktop\HistamcomVB\ABJsonSerializer\QuickJsonSerialize\obj\Debug\QuickJsonSerialize.pdb

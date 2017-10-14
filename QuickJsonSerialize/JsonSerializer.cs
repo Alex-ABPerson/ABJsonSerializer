@@ -100,7 +100,8 @@ namespace QuickJsonSerialize
                 result += Serialize("", element, format, indent, true);
 
             result = result.Remove(result.LastIndexOf(','), 1);
-            result = JsonWriter.Indent(result, indent);
+            if (format == JsonFormatting.Indented)
+                result = JsonWriter.Indent(result, indent);
 
             return result;
         }

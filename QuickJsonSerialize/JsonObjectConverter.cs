@@ -39,7 +39,10 @@ namespace QuickJsonSerialize
             int i = 0;
             foreach (string fieldName in fieldNames) 
             {
-                result += JsonWriter.Indent(JsonSerializer.Serialize(fieldName, fieldValues[i], format, identationLevel), identationLevel);
+                if (format == JsonFormatting.Indented)
+                    result += JsonWriter.Indent(JsonSerializer.Serialize(fieldName, fieldValues[i], format, identationLevel), identationLevel);
+                else
+                    result += JsonSerializer.Serialize(fieldName, fieldValues[i], format, identationLevel);
                 i++;
             }
 

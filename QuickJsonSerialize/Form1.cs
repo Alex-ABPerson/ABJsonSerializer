@@ -20,7 +20,7 @@ namespace QuickJsonSerialize
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            MessageBox.Show(JsonClassConverter.ConvertObjectToJson((new Foo()), JsonFormatting.Indented));
+            MessageBox.Show(JsonClassConverter.ConvertObjectToJson((new Foo()), JsonFormatting.Compact));
         }
     }
 
