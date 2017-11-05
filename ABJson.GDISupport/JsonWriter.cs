@@ -61,13 +61,12 @@ namespace ABJson.GDISupport
 
                     break;
                 case JsonKeyValueType.Array:
-
                     if (format == JsonFormatting.Compact)
-                        result += "[" + JsonSerializer.SerializeArray(((dynamic)obj).ToArray(), format, indent + 1) + "],";
+                        if (obj.GetType().IsArray) result += "[" + JsonSerializer.SerializeArray(((dynamic)obj), format, indent + 1) + "],"; else result += "[" + JsonSerializer.SerializeArray(((dynamic)obj).ToArray(), format, indent + 1) + "],";
                     else if (format == JsonFormatting.CompactReadable)
-                        result += "[" + JsonSerializer.SerializeArray(((dynamic)obj).ToArray(), format, indent + 1) + "], ";
+                        if (obj.GetType().IsArray) result += "[" + JsonSerializer.SerializeArray(((dynamic)obj), format, indent + 1) + "], "; else result += "[" + JsonSerializer.SerializeArray(((dynamic)obj).ToArray(), format, indent + 1) + "], ";
                     else if (format == JsonFormatting.Indented)
-                        result += $"[{Environment.NewLine}" + JsonSerializer.SerializeArray(((dynamic)obj).ToArray(), format, indent + 1) + $"],{Environment.NewLine}";
+                        if (obj.GetType().IsArray) result += $"[{Environment.NewLine}" + JsonSerializer.SerializeArray(((dynamic)obj), format, indent + 1) + "],"; else result += $"[{Environment.NewLine}" + JsonSerializer.SerializeArray(((dynamic)obj).ToArray(), format, indent + 1) + $"],{Environment.NewLine}";
 
                     break;
                 case JsonKeyValueType.Dictionary:

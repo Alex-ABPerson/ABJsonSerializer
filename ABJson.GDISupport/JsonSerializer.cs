@@ -105,13 +105,13 @@ namespace ABJson.GDISupport
                 if (justValue) result += JsonWriter.WriteValue(ImageToText.ConvertImageToText((Image)obj, System.Drawing.Imaging.ImageFormat.Png), JsonKeyValueType.Text, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, ImageToText.ConvertImageToText((Image)obj, System.Drawing.Imaging.ImageFormat.Png), JsonKeyValueType.Text, format, indentLevel);
 
             else if (obj is Point)
-                if (justValue) result += JsonWriter.WriteValue($"{((Point)obj).X},{((Point)obj).Y}", JsonKeyValueType.Text, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, ImageToText.ConvertImageToText((Bitmap)obj, System.Drawing.Imaging.ImageFormat.Png), JsonKeyValueType.Text, format, indentLevel);
+                if (justValue) result += JsonWriter.WriteValue($"{((Point)obj).X},{((Point)obj).Y}", JsonKeyValueType.Text, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, $"{((Point)obj).X},{((Point)obj).Y}", JsonKeyValueType.Text, format, indentLevel);
 
             else if (obj is Size)
-                if (justValue) result += JsonWriter.WriteValue($"{((Size)obj).Width},{((Size)obj).Height}", JsonKeyValueType.Text, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, ImageToText.ConvertImageToText((Bitmap)obj, System.Drawing.Imaging.ImageFormat.Png), JsonKeyValueType.Text, format, indentLevel);
+                if (justValue) result += JsonWriter.WriteValue($"{((Size)obj).Width},{((Size)obj).Height}", JsonKeyValueType.Text, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, $"{((Size)obj).Width},{((Size)obj).Height}", JsonKeyValueType.Text, format, indentLevel);
 
             else if (obj is Rectangle)
-                if (justValue) result += JsonWriter.WriteValue($"{((Rectangle)obj).X},{((Rectangle)obj).Y},{((Rectangle)obj).Width},{((Rectangle)obj).Height}", JsonKeyValueType.Text, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, ImageToText.ConvertImageToText((Bitmap)obj, System.Drawing.Imaging.ImageFormat.Png), JsonKeyValueType.Text, format, indentLevel);
+                if (justValue) result += JsonWriter.WriteValue($"{((Rectangle)obj).X},{((Rectangle)obj).Y},{((Rectangle)obj).Width},{((Rectangle)obj).Height}", JsonKeyValueType.Text, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, $"{((Rectangle)obj).X},{((Rectangle)obj).Y},{((Rectangle)obj).Width},{((Rectangle)obj).Height}", JsonKeyValueType.Text, format, indentLevel);
 
             else if (justValue) result += JsonWriter.WriteValue(obj, JsonKeyValueType.Object, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, obj, JsonKeyValueType.Object, format, indentLevel);
 
