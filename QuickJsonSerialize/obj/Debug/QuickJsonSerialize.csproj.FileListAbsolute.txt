@@ -19,3 +19,5 @@ I:\Desktop\HistamcomVB\ABJsonSerializer\QuickJsonSerialize\obj\Debug\QuickJsonSe
 I:\Desktop\HistamcomVB\ABJsonSerializer\QuickJsonSerialize\obj\Debug\QuickJsonSerialize.pdb
 I:\Desktop\HistamcomVB\ABJsonSerializer\QuickJsonSerialize\bin\Debug\ABJson.GDISupport.dll
 I:\Desktop\HistamcomVB\ABJsonSerializer\QuickJsonSerialize\bin\Debug\ABJson.GDISupport.pdb
+I:\Desktop\HistamcomVB\ABJsonSerializer\QuickJsonSerialize\bin\Debug\Newtonsoft.Json.dll
+I:\Desktop\HistamcomVB\ABJsonSerializer\QuickJsonSerialize\bin\Debug\Newtonsoft.Json.xml

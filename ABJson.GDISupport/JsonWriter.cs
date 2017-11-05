@@ -29,7 +29,16 @@ namespace ABJson.GDISupport
                     else if (format == JsonFormatting.CompactReadable)
                         result += "\"" + obj.ToString() + "\", ";
                     else if (format == JsonFormatting.Indented)
-                        result += "\"" + obj.ToString() + "\", \n";
+                        result += "\"" + obj.ToString() + $"\",{Environment.NewLine}";
+
+                    break;
+                case JsonKeyValueType.DateTime:
+                    if (format == JsonFormatting.Compact)
+                        result += "\"" + JsonSerializer.SerializeDateTime((DateTime)obj) + "\",";
+                    else if (format == JsonFormatting.CompactReadable)
+                        result += "\"" + JsonSerializer.SerializeDateTime((DateTime)obj) + "\", ";
+                    else if (format == JsonFormatting.Indented)
+                        result += "\"" + JsonSerializer.SerializeDateTime((DateTime)obj) + $"\",{Environment.NewLine}";
 
                     break;
                 case JsonKeyValueType.Boolean:
@@ -39,7 +48,7 @@ namespace ABJson.GDISupport
                     else if (format == JsonFormatting.CompactReadable)
                         result += obj.ToString().ToLower() + ", ";
                     else if (format == JsonFormatting.Indented)
-                        result += obj.ToString().ToLower() + ", \n";
+                        result += obj.ToString().ToLower() + $",{Environment.NewLine}";
 
                     break;
                 case JsonKeyValueType.Null:
@@ -48,7 +57,7 @@ namespace ABJson.GDISupport
                     else if (format == JsonFormatting.CompactReadable)
                         result += "null, ";
                     else if (format == JsonFormatting.Indented)
-                        result += "null, \n";
+                        result += $"null, {Environment.NewLine}";
 
                     break;
                 case JsonKeyValueType.Array:
@@ -58,7 +67,16 @@ namespace ABJson.GDISupport
                     else if (format == JsonFormatting.CompactReadable)
                         result += "[" + JsonSerializer.SerializeArray(((dynamic)obj).ToArray(), format, indent + 1) + "], ";
                     else if (format == JsonFormatting.Indented)
-                        result += "[\n" + JsonSerializer.SerializeArray(((dynamic)obj).ToArray(), format, indent + 1) + "], \n";
+                        result += $"[{Environment.NewLine}" + JsonSerializer.SerializeArray(((dynamic)obj).ToArray(), format, indent + 1) + $"],{Environment.NewLine}";
+
+                    break;
+                case JsonKeyValueType.Dictionary:
+                    if (format == JsonFormatting.Compact)
+                        result += "{" + JsonSerializer.SerializeDictionary(((dynamic)obj), format, indent + 1) + "},";
+                    else if (format == JsonFormatting.CompactReadable)
+                        result += "{" + JsonSerializer.SerializeDictionary(((dynamic)obj), format, indent + 1) + "}, ";
+                    else if (format == JsonFormatting.Indented)
+                        result += $"{{{Environment.NewLine}" + JsonSerializer.SerializeDictionary(((dynamic)obj), format, indent + 1) + $"}},{Environment.NewLine}";
 
                     break;
                 case JsonKeyValueType.Object:
@@ -67,7 +85,7 @@ namespace ABJson.GDISupport
                     else if (format == JsonFormatting.CompactReadable)
                         result += JsonClassConverter.ConvertObjectToJson(obj, format, indent + 1) + ", ";
                     else if (format == JsonFormatting.Indented)
-                        result += JsonClassConverter.ConvertObjectToJson(obj, format, indent + 1) + ", \n";
+                        result += JsonClassConverter.ConvertObjectToJson(obj, format, indent + 1) + $",{Environment.NewLine}";
 
                     break;                   
             }
@@ -94,7 +112,7 @@ namespace ABJson.GDISupport
             var strArray = value.Split('\n');
             foreach (var s in strArray)
                 if (s != "")
-                    str += new string(' ', size * 4) + s + "\n";
+                    str += new string(' ', size * 4) + s + $"{Environment.NewLine}";
             return str;
         }
     }

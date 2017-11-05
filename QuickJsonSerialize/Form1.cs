@@ -21,28 +21,34 @@ namespace QuickJsonSerialize
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            MessageBox.Show(JsonClassConverter.ConvertObjectToJson((new Foo()), JsonFormatting.Compact).Length.ToString());
+            Foo theFoo = new Foo();
+            theFoo.aDictionary.Add(1, "ItemOne");
+            theFoo.aDictionary.Add(2, "ItemTwo");
+            MessageBox.Show(Newtonsoft.Json.JsonConvert.SerializeObject(theFoo, Newtonsoft.Json.Formatting.Indented));
+            textBox1.Text = JsonClassConverter.ConvertObjectToJson(theFoo, JsonFormatting.Indented);
         }
     }
 
     public class Foo
     {
-        //public string hello = "Hi!";
-        //public int anInt = 12349;
-        //public bool anBool = true;
-        //public string aNull = null;
-        public Image anImage = Properties.Resources.what_you_on_about_1_;
-        //public List<Bar> aBar = new List<Bar>()
-        //{
-        //    new Bar() 
-        //    {
-        //        aBarString = "This is a bar ONE"
-        //    },
-        //    new Bar() 
-        //    {
-        //        aBarString = "This is a bar TWO"
-        //    }
-        //};
+        public string hello = "Hi!";
+        public int anInt = 12349;
+        public bool anBool = true;
+        public string aNull = null;
+        public DateTime aDateTime = new DateTime(2005, 5, 3, 5, 2, 3, DateTimeKind.Local);
+        //public Image anImage = Properties.Resources.what_you_on_about_1_;
+        public Dictionary<int, string> aDictionary = new Dictionary<int, string>();
+        public List<Bar> aBar = new List<Bar>()
+        {
+            new Bar()
+            {
+                aBarString = "This is a bar ONE"
+            },
+            new Bar()
+            {
+                aBarString = "This is a bar TWO"
+            }
+        };
     }
 
     public class Bar

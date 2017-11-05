@@ -21,7 +21,7 @@ namespace ABJson.GDISupport
             else if (format == JsonFormatting.CompactReadable)
                 result = "{ ";
             else if (format == JsonFormatting.Indented)
-                result = "{\n";
+                result = $"{{{Environment.NewLine}";
 
             var bindingFlags = BindingFlags.Instance |
                    BindingFlags.NonPublic |
