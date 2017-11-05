@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 
-namespace QuickJsonSerialize
+namespace ABJson.GDISupport
 {
     public enum JsonFormatting
     {
@@ -82,9 +82,10 @@ namespace QuickJsonSerialize
             else if (obj.IsArray())
                 if (justValue) result += JsonWriter.WriteValue(obj, JsonKeyValueType.Array, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, obj, JsonKeyValueType.Array, format, indentLevel);
 
-            else if (obj is Bitmap) result += JsonWriter.WriteKeyValuePair(name, "NYI", JsonKeyValueType.Numerical, format, indentLevel);
+            else if (obj is Bitmap)
+                if (justValue) result += JsonWriter.WriteValue(ImageToText.ConvertImageToText((Bitmap)obj, System.Drawing.Imaging.ImageFormat.Png), JsonKeyValueType.Text, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, ImageToText.ConvertImageToText((Bitmap)obj, System.Drawing.Imaging.ImageFormat.Png), JsonKeyValueType.Text, format, indentLevel);
 
-            else if (obj is Image) result += JsonWriter.WriteKeyValuePair(name, "NYI", JsonKeyValueType.Numerical, format, indentLevel);
+            else if (obj is Image) result += JsonWriter.WriteKeyValuePair(name, ImageToText.ConvertImageToText((Image)obj, System.Drawing.Imaging.ImageFormat.Png), JsonKeyValueType.Text, format, indentLevel);
 
             else if (justValue) result += JsonWriter.WriteValue(obj, JsonKeyValueType.Object, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, obj, JsonKeyValueType.Object, format, indentLevel);
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Reflection;
 
-namespace QuickJsonSerialize
+namespace ABJson.GDISupport
 {
     public static class JsonClassConverter
     {

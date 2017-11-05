@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ABJson.GDISupport;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,27 +21,28 @@ namespace QuickJsonSerialize
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            MessageBox.Show(JsonClassConverter.ConvertObjectToJson((new Foo()), JsonFormatting.Compact));
+            MessageBox.Show(JsonClassConverter.ConvertObjectToJson((new Foo()), JsonFormatting.Compact).Length.ToString());
         }
     }
 
     public class Foo
     {
-        public string hello = "Hi!";
-        public int anInt = 12349;
-        public bool anBool = true;
-        public string aNull = null;
-        public List<Bar> aBar = new List<Bar>()
-        {
-            new Bar() 
-            {
-                aBarString = "This is a bar ONE"
-            },
-            new Bar() 
-            {
-                aBarString = "This is a bar TWO"
-            }
-        };
+        //public string hello = "Hi!";
+        //public int anInt = 12349;
+        //public bool anBool = true;
+        //public string aNull = null;
+        public Image anImage = Properties.Resources.what_you_on_about_1_;
+        //public List<Bar> aBar = new List<Bar>()
+        //{
+        //    new Bar() 
+        //    {
+        //        aBarString = "This is a bar ONE"
+        //    },
+        //    new Bar() 
+        //    {
+        //        aBarString = "This is a bar TWO"
+        //    }
+        //};
     }
 
     public class Bar

@@ -1,0 +1,6 @@
+I:\Desktop\HistamcomVB\ABJsonSerializer\ABJson.GDISupport\bin\Debug\ABJson.GDISupport.dll
+I:\Desktop\HistamcomVB\ABJsonSerializer\ABJson.GDISupport\bin\Debug\ABJson.GDISupport.pdb
+I:\Desktop\HistamcomVB\ABJsonSerializer\ABJson.GDISupport\obj\Debug\ABJson.GDISupport.csprojResolveAssemblyReference.cache
+I:\Desktop\HistamcomVB\ABJsonSerializer\ABJson.GDISupport\obj\Debug\ABJson.GDISupport.csproj.CoreCompileInputs.cache
+I:\Desktop\HistamcomVB\ABJsonSerializer\ABJson.GDISupport\obj\Debug\ABJson.GDISupport.dll
+I:\Desktop\HistamcomVB\ABJsonSerializer\ABJson.GDISupport\obj\Debug\ABJson.GDISupport.pdb

@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickJsonSerialize", "QuickJsonSerialize\QuickJsonSerialize.csproj", "{34730746-0D3A-43E8-99BF-E2CB314D44B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ABJson.GDISupport", "ABJson.GDISupport\ABJson.GDISupport.csproj", "{72A862E9-B2F3-4066-ACBC-2ABB0E3A7BC3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{34730746-0D3A-43E8-99BF-E2CB314D44B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34730746-0D3A-43E8-99BF-E2CB314D44B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34730746-0D3A-43E8-99BF-E2CB314D44B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72A862E9-B2F3-4066-ACBC-2ABB0E3A7BC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72A862E9-B2F3-4066-ACBC-2ABB0E3A7BC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72A862E9-B2F3-4066-ACBC-2ABB0E3A7BC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72A862E9-B2F3-4066-ACBC-2ABB0E3A7BC3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {980ADBF1-4639-436B-B82D-766392EF2A89}
 	EndGlobalSection
 EndGlobal
