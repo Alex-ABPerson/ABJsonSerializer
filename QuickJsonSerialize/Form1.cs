@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -21,12 +22,69 @@ namespace QuickJsonSerialize
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            
+            
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
             Foo theFoo = new Foo();
             theFoo.aDictionary.Add("Hello1", new string[] { "Key1", "Key2" });
             theFoo.aDictionary.Add("Hello2", new string[] { "Key2-3", "Key2-2" });
+
+
+            Stopwatch sw = Stopwatch.StartNew();
+
+            string json = JsonClassConverter.ConvertObjectToJson(theFoo, JsonFormatting.Indented);
+
+            sw.Stop();
+
+            Console.WriteLine("TIME ELAPSED ABJSON: " + sw.ElapsedMilliseconds + "ms");
+
+            Stopwatch sw2 = Stopwatch.StartNew();
+
+            string json2 = Newtonsoft.Json.JsonConvert.SerializeObject(theFoo, Newtonsoft.Json.Formatting.Indented);
+
+            sw2.Stop();
+
+            Console.WriteLine("TIME ELAPSED: " + sw2.ElapsedMilliseconds + "ms");
             //MessageBox.Show(Newtonsoft.Json.JsonConvert.SerializeObject(theFoo, Newtonsoft.Json.Formatting.Indented));
-            textBox1.Text = JsonClassConverter.ConvertObjectToJson(theFoo, JsonFormatting.Indented);
+
+            textBox1.Text = json;
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Stopwatch sw = Stopwatch.StartNew();
+
+            DeserializeTest dtest = JsonClassConverter.ConvertJsonToObject<DeserializeTest>(textBox2.Text);
+
+            sw.Stop();
+
+            Console.WriteLine("TIME ELAPSED ABJSON: " + sw.ElapsedMilliseconds + "ms");
+
+            Stopwatch sw2 = Stopwatch.StartNew();
+
+            DeserializeTest dtest2 = Newtonsoft.Json.JsonConvert.DeserializeObject<DeserializeTest>(textBox2.Text);
+
+            sw2.Stop();
+
+            Console.WriteLine("TIME ELAPSED: " + sw2.ElapsedMilliseconds + "ms");
+
+            MessageBox.Show(dtest.yoy);
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            JsonReader.GetKeyValueData("'lol': 'How are you today?'");
+        }
+    }
+
+    public class DeserializeTest
+    {
+        public string yoy;
+        public bool aBool;
+        public int anInt;
     }
 
     public class Foo
@@ -52,6 +110,11 @@ namespace QuickJsonSerialize
                 aBarString = "This is a bar TWO"
             }
         };
+    }
+
+    public class Bar2 : Bar
+    {
+        public string aBar2String = "ThisIsABar2ThingOnly";
     }
 
     public class Bar
