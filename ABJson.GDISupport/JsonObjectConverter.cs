@@ -59,7 +59,7 @@ namespace ABJson.GDISupport
                     if (fieldNames[i] == name)
                     {
                         JsonKeyValuePair jkvp = JsonDeserializer.Deserialize(str, fieldTypes[i]);
-                        try { type.GetField(jkvp.name, bindingFlags).SetValue(obj, jkvp.value); } catch { }
+                        try { type.GetField(jkvp.name, bindingFlags).SetValue(obj, jkvp.value); } catch (Exception ex) { }
                         try { type.GetProperty(jkvp.name, bindingFlags).SetValue(obj, jkvp.value); } catch { }
                     }
                 }

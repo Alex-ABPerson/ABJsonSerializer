@@ -85,6 +85,7 @@ namespace QuickJsonSerialize
         public string yoy;
         public bool aBool;
         public int anInt;
+        public List<object> anArray;
     }
 
     public class Foo

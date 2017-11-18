@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,6 +10,15 @@ namespace ABJson.GDISupport
 {
     public static class JsonDeserializer
     {
+        internal static Type GetListType(this Type type)
+        {
+            //use type.GenericTypeArguments if exist 
+            if (type.GenericTypeArguments.Any())
+                return type.GenericTypeArguments.First();
+
+            return type.GetRuntimeProperty("Item").PropertyType;
+        }
+
         public static bool IsList(this Type o)
         {
             try
@@ -40,15 +50,20 @@ namespace ABJson.GDISupport
             else return false;
         }
 
-        public static JsonKeyValuePair Deserialize(string json, Type typ)
+        public static object DeserializeValue<T>(string json, bool onlyValue = false)
+        {
+            return (T)Deserialize(json, typeof(T), onlyValue).value;
+        }
+
+        public static JsonKeyValuePair Deserialize(string json, Type typ, bool onlyValue = false)
         {
 
-            JsonKeyValuePair ret = JsonReader.GetKeyValueData(json);
+            JsonKeyValuePair ret = new JsonKeyValuePair();
+
+            if (onlyValue) ret.value = json; else ret = JsonReader.GetKeyValueData(json);
 
             if (ret.value.ToString() == "null")
-            {
                 ret.value = null;
-            }
             else
             {
                 if (typ.IsNumericType()) ret.value = Convert.ChangeType(Convert.ToDouble(ret.value.ToString()), typ);
@@ -57,10 +72,10 @@ namespace ABJson.GDISupport
 
                 // TODO: DATETIME
                 else if (typ.IsList()) // A List<>
-                    ret.value = DeserializeArray(ret.value.ToString()).ToList();
+                    ret.value = DeserializeArray(ret.value.ToString(), typ);
 
-                else if (typ.IsArray()) // An Array - same as list but without .ToList();
-                    ret.value = DeserializeArray(ret.value.ToString());
+                else if (typ.IsArray) // An Array - same as list but without .ToList();
+                    ret.value = DeserializeArray(ret.value.ToString(), typ).ToArray();
 
                 else if (typ.IsDictionary())
                     ret.value = DeserializeDictionary(ret.value.ToString());
@@ -77,9 +92,39 @@ namespace ABJson.GDISupport
             return ret;
         }
 
-        public static string[] DeserializeArray(string json)
+        public static dynamic DeserializeArray(string json, Type typ)
         {
-            return null;
+            // This function is a mess as it needs to make List<string> not List<object> and lots of other things like that!
+            // The code in the function is not meant to be neat and is pretty much made of a bunch of snippets from stackoverflow.
+
+            Type type;
+
+            if (typ.IsList())
+                type = typ.GetListType();
+            else
+                type = typ.GetElementType();
+
+
+
+            json = json.Remove(0, 1).Remove(json.LastIndexOf(']') - 1);
+
+            var list = typeof(List<>);
+            var listOfType = list.MakeGenericType(type);
+
+            dynamic result = Activator.CreateInstance(listOfType);
+
+            string[] arrayItems = JsonReader.GetAllValuesInArray(json);
+
+            foreach (string str in arrayItems)
+            {
+                MethodInfo method = typeof(JsonDeserializer).GetMethod("DeserializeValue");
+                MethodInfo generic = method.MakeGenericMethod(type);
+                dynamic value = generic.Invoke(null, new object[] { str, true });
+
+                result.Add(value);
+            }
+
+            return result;
         }
 
         public static string[] DeserializeDictionary(string json)

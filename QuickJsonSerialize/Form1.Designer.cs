@@ -36,8 +36,8 @@
             this.button2 = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.button3 = new System.Windows.Forms.Button();
             this.textBox3 = new System.Windows.Forms.TextBox();
+            this.button3 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -98,7 +98,8 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(372, 277);
             this.textBox2.TabIndex = 0;
-            this.textBox2.Text = "{\r\n \"yoy\": \"c\'mon c\'mon\",\r\n \"aBool\": true,\r\n \"anInt\": 12345\r\n}";
+            this.textBox2.Text = "{\r\n \"yoy\": \"c\'mon c\'mon\",\r\n \"aBool\": true,\r\n \"anInt\": 12345,\r\n \"anArray\": [\r\n  \"H" +
+    "ello1\",\r\n  \"Hello2\"\r\n ]\r\n}";
             // 
             // button2
             // 
@@ -147,6 +148,15 @@
             this.splitContainer2.SplitterDistance = 300;
             this.splitContainer2.TabIndex = 4;
             // 
+            // textBox3
+            // 
+            this.textBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox3.Location = new System.Drawing.Point(0, 23);
+            this.textBox3.Multiline = true;
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(563, 84);
+            this.textBox3.TabIndex = 1;
+            // 
             // button3
             // 
             this.button3.Dock = System.Windows.Forms.DockStyle.Top;
@@ -157,15 +167,6 @@
             this.button3.Text = "JsonReader Test";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // textBox3
-            // 
-            this.textBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox3.Location = new System.Drawing.Point(0, 23);
-            this.textBox3.Multiline = true;
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(563, 84);
-            this.textBox3.TabIndex = 1;
             // 
             // Form1
             // 
