@@ -23,7 +23,10 @@ namespace ABJson.GDISupport
                 if (nextIsEscape)
                 {
                     nextIsEscape = false;
-                    if (Building) BuildUp += ch;
+                    if (Building) {
+                        if (ch == '"' || ch == '\'') BuildUp = BuildUp.Substring(0, BuildUp.Length - 1); // Removes the "\" if it's a " or '
+                        BuildUp += ch;
+                    }
                 } 
                 else
                 {

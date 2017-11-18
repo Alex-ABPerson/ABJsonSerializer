@@ -45,29 +45,35 @@ namespace ABJson.GDISupport
 
             JsonKeyValuePair ret = JsonReader.GetKeyValueData(json);
 
-            if (typ.IsNumericType()) ret.value = Convert.ChangeType(Convert.ToDouble(ret.value.ToString()), typ);
+            if (ret.value.ToString() == "null")
+            {
+                ret.value = null;
+            }
+            else
+            {
+                if (typ.IsNumericType()) ret.value = Convert.ChangeType(Convert.ToDouble(ret.value.ToString()), typ);
 
-            else if (Type.GetTypeCode(typ) == TypeCode.Boolean) ret.value = (ret.value.ToString().ToLower() == "true") ? true : false;
+                else if (Type.GetTypeCode(typ) == TypeCode.Boolean) ret.value = (ret.value.ToString().ToLower() == "true") ? true : false;
 
-            // TODO: DATETIME
-            else if (typ.IsList()) // A List<>
-                ret.value = DeserializeArray(ret.value.ToString()).ToList();
+                // TODO: DATETIME
+                else if (typ.IsList()) // A List<>
+                    ret.value = DeserializeArray(ret.value.ToString()).ToList();
 
-            else if (typ.IsArray()) // An Array - same as list but without .ToList();
-                ret.value = DeserializeArray(ret.value.ToString());
+                else if (typ.IsArray()) // An Array - same as list but without .ToList();
+                    ret.value = DeserializeArray(ret.value.ToString());
 
-            else if (typ.IsDictionary())
-                ret.value = DeserializeDictionary(ret.value.ToString());
+                else if (typ.IsDictionary())
+                    ret.value = DeserializeDictionary(ret.value.ToString());
 
-            //else if (Activator.CreateInstance(typ) is Bitmap)
-            //    ret.value = ImageToText.ConvertTextToImage(ret.value.ToString());
+                //else if (Activator.CreateInstance(typ) is Bitmap)
+                //    ret.value = ImageToText.ConvertTextToImage(ret.value.ToString());
 
-            //else if (Activator.CreateInstance(typ) is Image)
-            //    ret.value = ImageToText.ConvertTextToImage(ret.value.ToString());
+                //else if (Activator.CreateInstance(typ) is Image)
+                //    ret.value = ImageToText.ConvertTextToImage(ret.value.ToString());
 
-            //else if (Activator.CreateInstance(typ) is Point)
-            //    ret.value = new Point(int.Parse(ret.value.ToString().Split(',')[0]), int.Parse(ret.value.ToString().Split(',')[1]));
-
+                //else if (Activator.CreateInstance(typ) is Point)
+                //    ret.value = new Point(int.Parse(ret.value.ToString().Split(',')[0]), int.Parse(ret.value.ToString().Split(',')[1]));
+            }
             return ret;
         }
 
