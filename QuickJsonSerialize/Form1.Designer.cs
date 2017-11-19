@@ -56,7 +56,8 @@
             this.textBox1.Location = new System.Drawing.Point(0, 23);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(187, 277);
+            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBox1.Size = new System.Drawing.Size(457, 277);
             this.textBox1.TabIndex = 0;
             // 
             // panel1
@@ -66,7 +67,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(187, 300);
+            this.panel1.Size = new System.Drawing.Size(457, 300);
             this.panel1.TabIndex = 1;
             // 
             // button1
@@ -74,7 +75,7 @@
             this.button1.Dock = System.Windows.Forms.DockStyle.Top;
             this.button1.Location = new System.Drawing.Point(0, 0);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(187, 23);
+            this.button1.Size = new System.Drawing.Size(457, 23);
             this.button1.TabIndex = 2;
             this.button1.Text = "Serialize";
             this.button1.UseVisualStyleBackColor = true;
@@ -87,7 +88,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(372, 300);
+            this.panel2.Size = new System.Drawing.Size(492, 300);
             this.panel2.TabIndex = 2;
             // 
             // textBox2
@@ -96,17 +97,19 @@
             this.textBox2.Location = new System.Drawing.Point(0, 23);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(372, 277);
+            this.textBox2.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBox2.Size = new System.Drawing.Size(492, 277);
             this.textBox2.TabIndex = 0;
             this.textBox2.Text = "{\r\n \"yoy\": \"c\'mon c\'mon\",\r\n \"aBool\": true,\r\n \"anInt\": 12345,\r\n \"anArray\": [\r\n  \"H" +
-    "ello1\",\r\n  \"Hello2\"\r\n ]\r\n}";
+    "ello1\",\r\n  \"Hello2\"\r\n ],\r\n \"aDictionary\": {\r\n  1: \"value1\",\r\n  2: \"value2\"\r\n },\r" +
+    "\n \"idt\": {\r\n  \"itworks\": \"YOY!\"\r\n }\r\n}";
             // 
             // button2
             // 
             this.button2.Dock = System.Windows.Forms.DockStyle.Top;
             this.button2.Location = new System.Drawing.Point(0, 0);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(372, 23);
+            this.button2.Size = new System.Drawing.Size(492, 23);
             this.button2.TabIndex = 2;
             this.button2.Text = "Deserialize";
             this.button2.UseVisualStyleBackColor = true;
@@ -125,8 +128,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.panel2);
-            this.splitContainer1.Size = new System.Drawing.Size(563, 300);
-            this.splitContainer1.SplitterDistance = 187;
+            this.splitContainer1.Size = new System.Drawing.Size(953, 300);
+            this.splitContainer1.SplitterDistance = 457;
             this.splitContainer1.TabIndex = 3;
             // 
             // splitContainer2
@@ -144,7 +147,7 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.textBox3);
             this.splitContainer2.Panel2.Controls.Add(this.button3);
-            this.splitContainer2.Size = new System.Drawing.Size(563, 411);
+            this.splitContainer2.Size = new System.Drawing.Size(953, 411);
             this.splitContainer2.SplitterDistance = 300;
             this.splitContainer2.TabIndex = 4;
             // 
@@ -154,7 +157,7 @@
             this.textBox3.Location = new System.Drawing.Point(0, 23);
             this.textBox3.Multiline = true;
             this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(563, 84);
+            this.textBox3.Size = new System.Drawing.Size(953, 84);
             this.textBox3.TabIndex = 1;
             // 
             // button3
@@ -162,7 +165,7 @@
             this.button3.Dock = System.Windows.Forms.DockStyle.Top;
             this.button3.Location = new System.Drawing.Point(0, 0);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(563, 23);
+            this.button3.Size = new System.Drawing.Size(953, 23);
             this.button3.TabIndex = 0;
             this.button3.Text = "JsonReader Test";
             this.button3.UseVisualStyleBackColor = true;
@@ -172,7 +175,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(563, 411);
+            this.ClientSize = new System.Drawing.Size(953, 411);
             this.Controls.Add(this.splitContainer2);
             this.Name = "Form1";
             this.Text = "Form1";

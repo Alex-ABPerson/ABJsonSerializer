@@ -57,7 +57,7 @@ namespace QuickJsonSerialize
         {
             Stopwatch sw = Stopwatch.StartNew();
 
-            DeserializeTest dtest = JsonClassConverter.ConvertJsonToObject<DeserializeTest>(textBox2.Text);
+            Foo dtest = JsonClassConverter.ConvertJsonToObject<Foo>(textBox2.Text);
 
             sw.Stop();
 
@@ -65,13 +65,13 @@ namespace QuickJsonSerialize
 
             Stopwatch sw2 = Stopwatch.StartNew();
 
-            DeserializeTest dtest2 = Newtonsoft.Json.JsonConvert.DeserializeObject<DeserializeTest>(textBox2.Text);
+            Foo dtest2 = Newtonsoft.Json.JsonConvert.DeserializeObject<Foo>(textBox2.Text);
 
             sw2.Stop();
 
             Console.WriteLine("TIME ELAPSED: " + sw2.ElapsedMilliseconds + "ms");
 
-            MessageBox.Show(dtest.yoy);
+            MessageBox.Show(dtest.ToString());
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -86,7 +86,13 @@ namespace QuickJsonSerialize
         public bool aBool;
         public int anInt;
         public List<string> anArray;
-        public Dictionary<int, string> aDictionary;
+        public Dictionary<int, string[]> aDictionary;
+        public List<InsideDeserializeTest> idt;
+    }
+
+    public class InsideDeserializeTest
+    {
+        public string itworks;
     }
 
     public class Foo
@@ -95,7 +101,7 @@ namespace QuickJsonSerialize
         public int anInt = 12349;
         public bool anBool = true;
         public string aNull = null;
-        public DateTime aDateTime = new DateTime(2005, 5, 3, 5, 2, 3, DateTimeKind.Local);
+        //public DateTime aDateTime = new DateTime(2005, 5, 3, 5, 2, 3, DateTimeKind.Local);
         public Point aPoint = new Point(3, 4);
         public Size aSize = new Size(30, 40);
         public Rectangle aRectangle = new Rectangle(5, 6, 7, 8);

@@ -255,18 +255,20 @@ namespace ABJson.GDISupport
                                 if (IsInValue)
                                     innerLevel += 1;
                                 else
-                                    if (hasFinishedName) { IsInValue = true; EndChar = ']'; buildUp += ch; }
+                                    if (hasFinishedName) { IsInValue = true; EndChar = ']'; }
                                 break;
                             case '{':
                                 if (IsInValue)
                                     innerLevel += 1;
                                 else
-                                    if (hasFinishedName) { IsInValue = true; EndChar = '}'; buildUp += ch; }
+                                    if (hasFinishedName) { IsInValue = true; EndChar = '}'; }
                                 break;
                             case ']':
                             case '}':
                                 if (innerLevel == 0)
+                                {
                                     if (hasFinishedName && EndChar == ch) IsInValue = false;
+                                }
                                 else
                                     innerLevel -= 1;                                
                                 break;

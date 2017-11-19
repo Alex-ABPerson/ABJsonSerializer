@@ -85,6 +85,24 @@ namespace ABJson.GDISupport
                 else if (typ.IsDictionary())
                     ret.value = DeserializeDictionary(ret.value.ToString(), typ);
 
+                else if (typ == typeof(Bitmap))
+                    ret.value = ImageToText.ConvertTextToImage(ret.value.ToString());
+
+                else if (typ == typeof(Image))
+                    ret.value = ImageToText.ConvertTextToImage(ret.value.ToString());
+
+                else if (typ == typeof(Point))
+                    ret.value = DeserializePoint(ret.value.ToString());
+
+                else if (typ == typeof(Size))
+                    ret.value = DeserializeSize(ret.value.ToString());
+
+                else if (typ == typeof(Rectangle))
+                    ret.value = DeserializeRectangle(ret.value.ToString());
+
+                else if (typ != typeof(string))
+                    ret.value = DeserializeObject(ret.value.ToString(), typ);
+
                 //else if (Activator.CreateInstance(typ) is Bitmap)
                 //    ret.value = ImageToText.ConvertTextToImage(ret.value.ToString());
 
@@ -95,6 +113,38 @@ namespace ABJson.GDISupport
                 //    ret.value = new Point(int.Parse(ret.value.ToString().Split(',')[0]), int.Parse(ret.value.ToString().Split(',')[1]));
             }
             return ret;
+        }
+
+        public static Point DeserializePoint(string json)
+        {
+            string[] values = json.Split(',');
+
+            return new Point(Convert.ToInt32(values[0]), Convert.ToInt32(values[1]));
+        }
+
+        public static Size DeserializeSize(string json)
+        {
+            string[] values = json.Split(',');
+
+            return new Size(Convert.ToInt32(values[0]), Convert.ToInt32(values[1]));
+        }
+
+        public static Rectangle DeserializeRectangle(string json)
+        {
+            string[] values = json.Split(',');
+
+            return new Rectangle(Convert.ToInt32(values[0]), Convert.ToInt32(values[1]), Convert.ToInt32(values[2]), Convert.ToInt32(values[3]));
+        }
+
+        // It is internal because the user SHOULD USE JsonClassConverter.ConvertJsonToObject<T>(json) NOT this, this is only here to parse a type into a function!
+        internal static dynamic DeserializeObject(string json, Type typ)
+        {
+            // Runs JsonClassConverter.ConvertJsonToObject with the type parsed in!
+            MethodInfo method = typeof(JsonClassConverter).GetMethod("ConvertJsonToObject");
+            MethodInfo generic = method.MakeGenericMethod(typ);
+            dynamic value = generic.Invoke(null, new object[] { json });
+
+            return value;
         }
 
         public static dynamic DeserializeArray(string json, Type typ)

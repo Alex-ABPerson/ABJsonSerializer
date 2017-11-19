@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Globalization;
+using System.ComponentModel;
 
 namespace ABJson.GDISupport
 {
@@ -105,18 +106,68 @@ namespace ABJson.GDISupport
                 if (justValue) result += JsonWriter.WriteValue(ImageToText.ConvertImageToText((Image)obj, System.Drawing.Imaging.ImageFormat.Png), JsonKeyValueType.Text, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, ImageToText.ConvertImageToText((Image)obj, System.Drawing.Imaging.ImageFormat.Png), JsonKeyValueType.Text, format, indentLevel);
 
             else if (obj is Point)
-                if (justValue) result += JsonWriter.WriteValue($"{((Point)obj).X},{((Point)obj).Y}", JsonKeyValueType.Text, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, $"{((Point)obj).X},{((Point)obj).Y}", JsonKeyValueType.Text, format, indentLevel);
+                if (justValue) result += JsonWriter.WriteValue(((Point)obj).X.ToString() + "," + ((Point)obj).Y.ToString(), JsonKeyValueType.Text, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, ((Point)obj).X.ToString() + "," + ((Point)obj).Y.ToString(), JsonKeyValueType.Text, format, indentLevel);
 
             else if (obj is Size)
-                if (justValue) result += JsonWriter.WriteValue($"{((Size)obj).Width},{((Size)obj).Height}", JsonKeyValueType.Text, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, $"{((Size)obj).Width},{((Size)obj).Height}", JsonKeyValueType.Text, format, indentLevel);
+                if (justValue) result += JsonWriter.WriteValue(((Size)obj).Width.ToString() + "," + ((Size)obj).Height.ToString(), JsonKeyValueType.Text, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, ((Size)obj).Width.ToString() + "," + ((Size)obj).Height.ToString(), JsonKeyValueType.Text, format, indentLevel);
 
             else if (obj is Rectangle)
-                if (justValue) result += JsonWriter.WriteValue($"{((Rectangle)obj).X},{((Rectangle)obj).Y},{((Rectangle)obj).Width},{((Rectangle)obj).Height}", JsonKeyValueType.Text, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, $"{((Rectangle)obj).X},{((Rectangle)obj).Y},{((Rectangle)obj).Width},{((Rectangle)obj).Height}", JsonKeyValueType.Text, format, indentLevel);
+                if (justValue) result += JsonWriter.WriteValue(((Rectangle)obj).X.ToString() + "," + ((Rectangle)obj).Y.ToString() + "," + ((Rectangle)obj).Width.ToString() + "," + ((Rectangle)obj).Height.ToString(), JsonKeyValueType.Text, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, ((Rectangle)obj).X.ToString() + "," + ((Rectangle)obj).Y.ToString() + "," + ((Rectangle)obj).Width.ToString() + "," + ((Rectangle)obj).Height.ToString(), JsonKeyValueType.Text, format, indentLevel);
 
             else if (justValue) result += JsonWriter.WriteValue(obj, JsonKeyValueType.Object, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, obj, JsonKeyValueType.Object, format, indentLevel);
 
             return result;
         }
+
+        //// A bit of a hack to only do the X and Y of a point!
+        //public static string SerializePoint(Point pnt, JsonFormatting format, int indent)
+        //{
+        //    string result = "";
+        //    if (format == JsonFormatting.Compact)
+        //        result = $"\"X\":\"{pnt.X}\",\"Y\":\"{pnt.Y}\"";
+        //    else if (format == JsonFormatting.CompactReadable)
+        //        result = $"\"X\": \"{pnt.X}, \"Y\": \"{pnt.Y}\"";
+        //    else if (format == JsonFormatting.Indented)
+        //        result = $"\"X\": \"{pnt.X}\",{Environment.NewLine}\"Y\": \"{pnt.Y}\"";
+
+        //    return "{" + Environment.NewLine + JsonWriter.Indent(result, indent) + "}";
+        //}
+
+        //// A bit of a hack to only do the Width and Height of a size!
+        //public static string SerializeSize(Size siz, JsonFormatting format, int indent)
+        //{
+        //    string result = "";
+        //    if (format == JsonFormatting.Compact)
+        //        result = $"\"Width\":{siz.Width},\"Height\":{siz.Height}}}";
+        //    else if (format == JsonFormatting.CompactReadable)
+        //        result = $"\"Width\": {siz.Width}, \"Height\": {siz.Height}}}";
+        //    else if (format == JsonFormatting.Indented)
+        //        result = $"\"Width\": {siz.Width},{Environment.NewLine}\"Height\": {siz.Height}";
+
+        //    return "{" + Environment.NewLine + JsonWriter.Indent(result, indent) + "}";
+        //}
+
+        //// A bit of a hack to only do the X, Y, Width and Height of a rectangle!
+        //public static string SerializeRectangle(Rectangle rect, JsonFormatting format, int indent)
+        //{
+        //    string result = "";
+        //    if (format == JsonFormatting.Compact)
+        //        result = $"\"X\":{rect.X},\"Y\":{rect.Y},\"Width\":{rect.Width},\"Height\":{rect.Height}";
+        //    else if (format == JsonFormatting.CompactReadable)
+        //        result = $"\"X\": {rect.X}, \"Y\": {rect.Y}\"Width\": {rect.Width}, \"Height\": {rect.Height}";
+        //    else if (format == JsonFormatting.Indented)
+        //        result = $"\"X\": {rect.X},{Environment.NewLine}\"Y\": {rect.Y},{Environment.NewLine}\"Width\": {rect.Width},{Environment.NewLine}\"Height\": {rect.Height}{Environment.NewLine}";
+
+        //    return "{" + Environment.NewLine + JsonWriter.Indent(result, indent) + "}";
+        //}
+
+        /// <summary>
+        /// This will check if a class has a TypeConverterAttribute if so it will check if that can convert to a string and if so it will do that, otherwise, it will run JsonClassConverter.ConvertObjectToJson(obj) on it!
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="format"></param>
+        /// <param name="indentLevel"></param>
+        /// <returns></returns>
 
         public static string SerializeArray(object[] obj, JsonFormatting format, int indent)
         {
