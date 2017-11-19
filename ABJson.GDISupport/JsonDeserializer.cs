@@ -100,6 +100,9 @@ namespace ABJson.GDISupport
                 else if (typ == typeof(Rectangle))
                     ret.value = DeserializeRectangle(ret.value.ToString());
 
+                else if (typ == typeof(Color))
+                    ret.value = new ColorConverter().ConvertFromString(ret.value.ToString());
+
                 else if (typ != typeof(string))
                     ret.value = DeserializeObject(ret.value.ToString(), typ);
 

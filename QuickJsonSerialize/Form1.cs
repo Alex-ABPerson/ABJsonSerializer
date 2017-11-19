@@ -74,10 +74,45 @@ namespace QuickJsonSerialize
             MessageBox.Show(dtest.ToString());
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void button3_Click_1(object sender, EventArgs e)
         {
-            JsonReader.GetKeyValueData("'lol': 'How are you today?'");
+            string result = "";
+
+            result += "Multiple Serializers test:" + Environment.NewLine;
+            result += "Each serializer will be displayed below and the end will be comparisons." + Environment.NewLine;
+            result += "This test is WITHOUT DateTimes due to ABJson not being able to Deserialize DateTimes yet because... DO YOU THINK I HAVE ALL DAY? Oh wait, I do have all day to work on it... well, I can't be bothered to add it now!" + Environment.NewLine;
+            result += "I will have a new test however with DateTimes!" + Environment.NewLine;
+
+            result += "THE OBJECT WE WILL BE SERIALIZING (in C#)" + Environment.NewLine;
+
+            result += "Newtonsoft.Json JSON:" + Environment.NewLine;
+
+            Stopwatch JSONNet = Stopwatch.StartNew();
+
+            string JSONNETstr = Newtonsoft.Json.JsonConvert.SerializeObject(new SerializersTest());
+
+            JSONNet.Stop();
+
         }
+    }
+
+    public class SerializersTest
+    {
+        public string string1;
+        public string string2;
+        public List<string> lstofstring;
+        public Point point1;
+        public Point point2;
+        public List<Point> lstofpoint;
+        public Size size1;
+        public Size size2;
+        public List<Size> lstofsize;
+        public Rectangle rect1;
+        public Rectangle rect2;
+        public List<Rectangle> lstofrect;
+        public Color clr1;
+        public Color clr2;
+        public List<Color> lstofcolor;
     }
 
     public class DeserializeTest
@@ -106,6 +141,7 @@ namespace QuickJsonSerialize
         public Size aSize = new Size(30, 40);
         public Rectangle aRectangle = new Rectangle(5, 6, 7, 8);
         //public Image anImage = Properties.Resources.what_you_on_about_1_;
+        public Color clr = Color.Black;
         public Dictionary<string, string[]> aDictionary = new Dictionary<string, string[]>();
         public List<Bar> aBar = new List<Bar>()
         {

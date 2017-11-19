@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Globalization;
 using System.ComponentModel;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace ABJson.GDISupport
 {
@@ -114,6 +116,9 @@ namespace ABJson.GDISupport
             else if (obj is Rectangle)
                 if (justValue) result += JsonWriter.WriteValue(((Rectangle)obj).X.ToString() + "," + ((Rectangle)obj).Y.ToString() + "," + ((Rectangle)obj).Width.ToString() + "," + ((Rectangle)obj).Height.ToString(), JsonKeyValueType.Text, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, ((Rectangle)obj).X.ToString() + "," + ((Rectangle)obj).Y.ToString() + "," + ((Rectangle)obj).Width.ToString() + "," + ((Rectangle)obj).Height.ToString(), JsonKeyValueType.Text, format, indentLevel);
 
+            else if (obj is Color)
+                if (justValue) result += JsonWriter.WriteValue(new ColorConverter().ConvertToString(obj), JsonKeyValueType.Text, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, new ColorConverter().ConvertToString(obj), JsonKeyValueType.Text, format, indentLevel);
+
             else if (justValue) result += JsonWriter.WriteValue(obj, JsonKeyValueType.Object, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, obj, JsonKeyValueType.Object, format, indentLevel);
 
             return result;
@@ -160,14 +165,6 @@ namespace ABJson.GDISupport
 
         //    return "{" + Environment.NewLine + JsonWriter.Indent(result, indent) + "}";
         //}
-
-        /// <summary>
-        /// This will check if a class has a TypeConverterAttribute if so it will check if that can convert to a string and if so it will do that, otherwise, it will run JsonClassConverter.ConvertObjectToJson(obj) on it!
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <param name="format"></param>
-        /// <param name="indentLevel"></param>
-        /// <returns></returns>
 
         public static string SerializeArray(object[] obj, JsonFormatting format, int indent)
         {
