@@ -50,6 +50,11 @@ namespace ABJson.GDISupport
             else return false;
         }
 
+        public static bool IsDictionary(this Type t)
+        {
+            return t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Dictionary<,>);
+        }
+
         public static object DeserializeValue<T>(string json, bool onlyValue = false)
         {
             return (T)Deserialize(json, typeof(T), onlyValue).value;
@@ -78,7 +83,7 @@ namespace ABJson.GDISupport
                     ret.value = DeserializeArray(ret.value.ToString(), typ).ToArray();
 
                 else if (typ.IsDictionary())
-                    ret.value = DeserializeDictionary(ret.value.ToString());
+                    ret.value = DeserializeDictionary(ret.value.ToString(), typ);
 
                 //else if (Activator.CreateInstance(typ) is Bitmap)
                 //    ret.value = ImageToText.ConvertTextToImage(ret.value.ToString());
@@ -94,7 +99,7 @@ namespace ABJson.GDISupport
 
         public static dynamic DeserializeArray(string json, Type typ)
         {
-            // This function is a mess as it needs to make List<string> not List<object> and lots of other things like that!
+            // This function is a mess as it needs to make a List<T> not List<object> and lots of other things like that!
             // The code in the function is not meant to be neat and is pretty much made of a bunch of snippets from stackoverflow.
 
             Type type;
@@ -104,9 +109,7 @@ namespace ABJson.GDISupport
             else
                 type = typ.GetElementType();
 
-
-
-            json = json.Remove(0, 1).Remove(json.LastIndexOf(']') - 1);
+            json = json.Trim().TrimStart('[').TrimEnd().TrimEnd(']');
 
             var list = typeof(List<>);
             var listOfType = list.MakeGenericType(type);
@@ -127,15 +130,40 @@ namespace ABJson.GDISupport
             return result;
         }
 
-        public static string[] DeserializeDictionary(string json)
+        public static dynamic DeserializeDictionary(string json, Type typ)
         {
-            return null;
+            // This function is also a mess as it needs to make a Dictionary<T, T> not Dictionary<object, object> and lots of other things like that!
+
+            Type[] arguments = typ.GetGenericArguments();
+            Type keyType = arguments[0];
+            Type valueType = arguments[1];
+
+            json = json.Trim().TrimStart('{').TrimEnd().TrimEnd('}');
+
+            var dictionary = typeof(Dictionary<,>);
+            var dictionaryOfType = dictionary.MakeGenericType(keyType, valueType);
+
+            dynamic result = Activator.CreateInstance(dictionaryOfType);
+
+            string[] dictionaryItems = JsonReader.GetAllKeyValues(json);
+
+            foreach (string str in dictionaryItems)
+            {
+                JsonKeyValuePair jkvp = JsonReader.GetKeyValueData(str);
+                dynamic newValue = Deserialize(jkvp.value.ToString(), valueType, true).value;
+
+                bool IsNumeric = keyType.IsNumericType();
+                dynamic name = (IsNumeric) ? Convert.ChangeType(Convert.ToDouble(jkvp.name), keyType) : jkvp.name;
+                result.Add(name, newValue);
+            }
+
+            return result;
         }
     }
 
     public class JsonKeyValuePair
     {
-        public string name;
+        public object name;
         public object value;
         public JsonKeyValueType type;
     }

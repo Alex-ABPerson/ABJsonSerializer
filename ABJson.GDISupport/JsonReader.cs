@@ -51,12 +51,14 @@ namespace ABJson.GDISupport
                             case '\\':
                                 nextIsEscape = true;
                                 break;
-                            case ',':
+                            case ':':
+                            case ',':                              
                                 if (!IsInValue)
                                 {
                                     Building = false;
                                     if (hasFinishedName) jkvp.value = BuildUp; else jkvp.name = BuildUp;
                                     BuildUp = "";
+                                    if (ch == ':') hasFinishedName = true;
                                     continue;
                                 }
                                 break;
@@ -68,6 +70,7 @@ namespace ABJson.GDISupport
                         switch (ch)
                         {
                             case ',':
+                                try { if (hasFinishedName) if (string.IsNullOrEmpty(jkvp.value.ToString())) jkvp.value = BuildUp; } catch { }
                                 break; // This is here so it doesn't go into the default!
                             case '"':
                             case '\'':
@@ -75,7 +78,7 @@ namespace ABJson.GDISupport
                             case '[':                                                      
                                 IsInValue = true;
                                 Building = true;
-                                EndChar = ch;
+                                if (ch == '"' || ch == '\'') EndChar = ch; else if (ch == '{') EndChar = '}'; else if (ch == '[') EndChar = ']';
                                 break;
                             case ':':
                                 hasFinishedName = true;
@@ -106,10 +109,11 @@ namespace ABJson.GDISupport
         public static string[] GetAllValuesInArray(string json)
         {
             List<string> arrayResult = new List<string>();
+
+            int innerLevel = 0;
             string BuildUp = "";
             bool Building = false;
             bool nextIsEscape = false; // Used to skip \" and \'
-            char EndChar = '"';
 
             foreach (char ch in json)
             {
@@ -122,41 +126,52 @@ namespace ABJson.GDISupport
                         BuildUp += ch;
                     }
                 } else {
-                    if (Building)
+                    switch (ch)
                     {
-                        switch (ch)
-                        {
-                            case '}':
-                            case ']':
-                            case '"':
-                            case '\'':
-                                if (ch == EndChar)
+                        case '{':
+                        case '[':
+                            if (innerLevel == 0) Building = true;
+                            innerLevel += 1;
+                            break;
+                        case '}':
+                        case ']':                          
+                            innerLevel -= 1;
+                            break;
+                        case ',':
+                            if (innerLevel == 0)
+                                if (Building)
+                                {
+                                    arrayResult.Add(BuildUp);
+                                    BuildUp = "";
+                                }
+                            break;
+                        case '"':
+                        case '\'':
+                            if (innerLevel == 0)
+                            {
+                                if (Building)
                                 {
                                     Building = false;
                                     arrayResult.Add(BuildUp);
                                     BuildUp = "";
-                                    continue;
                                 }
-                                break;
-                        }
-                        BuildUp += ch;
-                    }
-                    else
-                    {
-                        switch (ch)
-                        {
-                            case '"':
-                            case '\'':
-                            case '{':
-                            case '[':
-                                Building = true;
-                                EndChar = ch;
-                                break;
-                            case ',':
+                                else
+                                {
+                                    Building = true;
+                                    BuildUp = "";
+                                }
+                                continue;
+                            }
+                            break;
+                        default:
+                            // It may be a number or null or false or true!
+                            if (!char.IsWhiteSpace(ch))
+                                Building = true; // Build whatever it is.
 
-                                break;
-                        }
+                            break;
+
                     }
+                    BuildUp += ch;
                 }
             }
            
@@ -174,12 +189,14 @@ namespace ABJson.GDISupport
             List<string> arrayResult = new List<string>();
             string buildUp = "";
 
+            int innerLevel = 0; // This is so if (for example) we have an array like this: [["Hello1-1", "Hello1-2"], ["Hello2-1", "Hello2-2"]] it doesn't stop at the first square bracket like this: [["Hello1-1", "Hello1-2"]
             bool IsInValue = false;
             bool IsInName = false;
             bool hasFinishedName = false;
             bool receivedCommentFirstChar = false;
             bool IsInComment = false;
             bool CommentIsNewLineEnding = false;
+            char EndChar = '"';
 
             foreach (char ch in json)
             {
@@ -216,27 +233,42 @@ namespace ABJson.GDISupport
                                 else receivedCommentFirstChar = true;
                                 break;
                             case '*':
-                                    if (receivedCommentFirstChar)
-                                    {
-                                        IsInComment = true;
-                                        CommentIsNewLineEnding = false;
-                                    }
+                                if (receivedCommentFirstChar)
+                                { // This is a "/*" comment!
+                                    IsInComment = true;
+                                    CommentIsNewLineEnding = false;
+                                }
                                 break;
+                            case '\'':
                             case '"':
-                                if (hasFinishedName) if (IsInValue) IsInValue = false; else IsInValue = true;
-                                else
-                                    if (IsInName) IsInName = false; else IsInName = true;
+                                if (EndChar == ch)
+                                {
+                                    if (hasFinishedName) if (IsInValue) IsInValue = false; else IsInValue = true;
+                                    else
+                                        if (IsInName) IsInName = false; else IsInName = true;
+                                }
                                 break;
                             case ':':
                                 if (!IsInValue) hasFinishedName = true;
                                 break;
                             case '[':
+                                if (IsInValue)
+                                    innerLevel += 1;
+                                else
+                                    if (hasFinishedName) { IsInValue = true; EndChar = ']'; buildUp += ch; }
+                                break;
                             case '{':
-                                if (hasFinishedName) IsInValue = true;
+                                if (IsInValue)
+                                    innerLevel += 1;
+                                else
+                                    if (hasFinishedName) { IsInValue = true; EndChar = '}'; buildUp += ch; }
                                 break;
                             case ']':
                             case '}':
-                                if (hasFinishedName) IsInValue = false;
+                                if (innerLevel == 0)
+                                    if (hasFinishedName && EndChar == ch) IsInValue = false;
+                                else
+                                    innerLevel -= 1;                                
                                 break;
                             case ',':
                                 // Finish the buildup and reset a bunch of stuff..
@@ -247,12 +279,19 @@ namespace ABJson.GDISupport
                                     buildUp += ",";
                                     arrayResult.Add(buildUp);
                                     buildUp = "";
+                                    hasFinishedName = false;
+                                    IsInValue = false;
+                                    IsInName = false;
                                 }
 
-                                hasFinishedName = false;
-                                IsInValue = false;
-                                IsInName = false;
+                                
                                 break;
+                            //default:
+                            //    // It may be a number or null or false or true!
+                            //    if (!IsInName && !IsInValue)
+                            //        if (hasFinishedName) IsInValue = true; else IsInName = true; // Build whatever it is.
+
+                            //    break;
                         }
 
                     buildUp += ch;

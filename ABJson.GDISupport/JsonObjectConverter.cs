@@ -42,7 +42,7 @@ namespace ABJson.GDISupport
             string newJson = json;
             string[] newJsonLines;
             // Strip out the starting "{" and "}"
-            newJson = json.Remove(0, 1).Remove(json.LastIndexOf('}') - 1);
+            newJson = json.Trim().TrimStart('{').TrimEnd().TrimEnd('}');
             // Now get each value seperately
             newJsonLines = JsonReader.GetAllKeyValues(newJson);
             //foreach (string str in newJsonLines) System.Windows.Forms.MessageBox.Show(str);
@@ -51,7 +51,7 @@ namespace ABJson.GDISupport
             foreach (string str in newJsonLines)
             {
 
-                string name = JsonReader.GetKeyValueData(str).name;
+                string name = JsonReader.GetKeyValueData(str).name.ToString();
 
                 //string fname = fieldNames.Find(item => item == JsonReader.GetKeyValueData(str).name);
                 for (int i = 0; i < fieldNames.Count; i++)
@@ -59,8 +59,8 @@ namespace ABJson.GDISupport
                     if (fieldNames[i] == name)
                     {
                         JsonKeyValuePair jkvp = JsonDeserializer.Deserialize(str, fieldTypes[i]);
-                        try { type.GetField(jkvp.name, bindingFlags).SetValue(obj, jkvp.value); } catch (Exception ex) { }
-                        try { type.GetProperty(jkvp.name, bindingFlags).SetValue(obj, jkvp.value); } catch { }
+                        try { type.GetField(jkvp.name.ToString(), bindingFlags).SetValue(obj, jkvp.value); } catch { }
+                        try { type.GetProperty(jkvp.name.ToString(), bindingFlags).SetValue(obj, jkvp.value); } catch { }
                     }
                 }
             }
