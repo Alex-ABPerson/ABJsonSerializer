@@ -1,0 +1,83 @@
+[Serializable]
+    public class SerializersTest
+    {
+        public string string1 { get; set; }
+        public string string2 { get; set; }
+        public List<string> lstofstring { get; set; }
+        public Point point1 { get; set; }
+        public Point point2 { get; set; }
+        public List<Point> lstofpoint { get; set; }
+        public Size size1 { get; set; }
+        public Size size2 { get; set; }
+        public List<Size> lstofsize { get; set; }
+        public Rectangle rect1 { get; set; }
+        public Rectangle rect2 { get; set; }
+        public List<Rectangle> lstofrect { get; set; }
+        public Color clr1 { get; set; }
+        public Color clr2 { get; set; }
+        public List<Color> lstofcolor { get; set; }
+        public string[] strarray1 { get; set; }
+        public string[] strarray2 { get; set; }
+        public List<string[]> lstofarray { get; set; }
+        public Dictionary<int, string> dictionaryintstr1 { get; set; }
+        public Dictionary<int, string> dictionaryintstr2 { get; set; }
+        public Dictionary<string, string> dictionarystrstr1 { get; set; }
+        public Dictionary<string, string> dictionarystrstr2 { get; set; }
+        public Dictionary<string, string[]> dictionarystrarray { get; set; }
+        public List<Dictionary<int, string>> lstofdictionary { get; set; }
+        public List<Dictionary<int, string[]>[]> lstofarrayofdictionaryintarray { get; set; }
+
+        // Alright, all of the above are what we will be testing for today, so, now some real-life stuff!
+
+        public RealLifeExample rlexample { get; set; }
+    }
+
+    [Serializable]
+    public class RealLifeExample
+    {
+        public List<House> Houses { get; set; }
+        public List<Person> People { get; set; }
+    }
+
+    [Serializable]
+    public class Person
+    {
+        public List<Job> Job { get; set; }
+    }
+
+    [Serializable]
+    public class House
+    {
+        public Point Location;
+        public int Height { get; set; }
+        public List<Object> Objects { get; set; }
+        public Dictionary<int, Upgrade> upgrades;
+    }
+
+    [Serializable]
+    public class Upgrade
+    {
+        public bool willExtendWeight { get; set; }
+}
+
+    [Serializable]
+    public class Object
+    {
+        public string Name { get; set; }
+        public string Usage { get; set; }
+        public Color color { get; set; }
+    }
+
+    [Serializable]
+    public class Job
+    {
+        public int Money { get; set; }
+        public string Name { get; set; }
+    }
+
+    [Serializable]
+    public class Hobby
+    {
+        public string Name { get; set; }
+        public int Popularity { get; set; }
+    }

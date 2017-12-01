@@ -166,7 +166,7 @@ namespace ABJson.GDISupport
         //    return "{" + Environment.NewLine + JsonWriter.Indent(result, indent) + "}";
         //}
 
-        public static string SerializeArray(object[] obj, JsonFormatting format, int indent)
+        public static string SerializeArray(dynamic obj, JsonFormatting format, int indent)
         {
             string result = "";
 
@@ -187,16 +187,15 @@ namespace ABJson.GDISupport
 
             foreach (dynamic element in obj)
             {
-                string key = Serialize("", element.Key, format, indent, true);
                 string value = Serialize("", element.Value, format, indent, true);
 
                 if (format == JsonFormatting.Compact)
-                    if (key.LastIndexOf('\n') > 0) result += key.Remove(key.LastIndexOf('\n'), 1).Remove(key.LastIndexOf(','), 1) + ":" + value; else result += key + ":" + value;
+                    result += "\"" + element.Key + "\"" + ":" + value;
                 else
-                    if (key.LastIndexOf('\n') > 0) result += key.Remove(key.LastIndexOf('\n'), 1).Remove(key.LastIndexOf(','), 1) + ": " + value; else result += key + ": " + value;
+                    result += "\"" + element.Key + "\"" + ": " + value;
             }
 
-            result = result.Remove(result.LastIndexOf(','), 1);
+            result = result.TrimEnd().Trim(',');
             if (format == JsonFormatting.Indented)
                 result = JsonWriter.Indent(result, indent);
 
@@ -213,14 +212,51 @@ namespace ABJson.GDISupport
             {
                 
                 case DateTimeKind.Utc:
-                    result += $"{CopyIntToString(4, dtime.Year)}-{CopyIntToString(2, dtime.Month)}-{CopyIntToString(2, dtime.Day)}T{CopyIntToString(2, dtime.Hour)}:{CopyIntToString(2, dtime.Minute)}:{CopyIntToString(2, dtime.Second)}.{CopyIntToString(2, dtime.Millisecond)}Z";
+                    //bool intoFirstChain = false;
+
+                    //if (dtime.Year != 0) intoFirstChain = true;
+                    //if (intoFirstChain) result += CopyIntToString(4, dtime.Year) + "-";
+
+                    //if (dtime.Month != 0) intoFirstChain = true;
+                    //if (intoFirstChain) result += CopyIntToString(2, dtime.Month) + "-";
+
+                    //if (dtime.Day != 0) intoFirstChain = true;
+                    //if (intoFirstChain) result += CopyIntToString(2, dtime.Day) + "T";
+
+                    //bool intoLastChain = false;
+
+                    //if (dtime.Hour != 0) intoLastChain = true;
+                    //if (intoLastChain) result += CopyIntToString(2, dtime.Day) + "-";
+
+                    //if (dtime.Minute != 0) intoLastChain = true;
+                    //if (intoLastChain) result += CopyIntToString(2, dtime.Minute) + "-";
+
+                    //if (dtime.Second != 0) intoLastChain = true;
+                    //if (intoLastChain) result += CopyIntToString(2, dtime.Second) + ".";
+
+                    //if (dtime.Millisecond != 0) intoLastChain = true;
+                    //if (intoLastChain) result += CopyIntToString(3, dtime.Millisecond);
+
+                    //result = result.TrimEnd('.').TrimEnd('-').TrimEnd('T');
+                    //result += "Z";
+
+                    if (dtime.Millisecond == 0)
+                        result += $"{CopyIntToString(4, dtime.Year)}-{CopyIntToString(2, dtime.Month)}-{CopyIntToString(2, dtime.Day)}T{CopyIntToString(2, dtime.Hour)}:{CopyIntToString(2, dtime.Minute)}:{CopyIntToString(2, dtime.Second)}Z";
+                    else
+                        result += $"{CopyIntToString(4, dtime.Year)}-{CopyIntToString(2, dtime.Month)}-{CopyIntToString(2, dtime.Day)}T{CopyIntToString(2, dtime.Hour)}:{CopyIntToString(2, dtime.Minute)}:{CopyIntToString(2, dtime.Second)}.{CopyIntToString(3, dtime.Millisecond)}Z";
                     break;
                 case DateTimeKind.Unspecified:
-                    result += $"{CopyIntToString(4, dtime.Year)}-{CopyIntToString(2, dtime.Month)}-{CopyIntToString(2, dtime.Day)}T{CopyIntToString(2, dtime.Hour)}:{CopyIntToString(2, dtime.Minute)}:{CopyIntToString(2, dtime.Second)}.{CopyIntToString(2, dtime.Millisecond)}";
+                    if (dtime.Millisecond == 0)
+                        result += $"{CopyIntToString(4, dtime.Year)}-{CopyIntToString(2, dtime.Month)}-{CopyIntToString(2, dtime.Day)}T{CopyIntToString(2, dtime.Hour)}:{CopyIntToString(2, dtime.Minute)}:{CopyIntToString(2, dtime.Second)}";
+                    else
+                        result += $"{CopyIntToString(4, dtime.Year)}-{CopyIntToString(2, dtime.Month)}-{CopyIntToString(2, dtime.Day)}T{CopyIntToString(2, dtime.Hour)}:{CopyIntToString(2, dtime.Minute)}:{CopyIntToString(2, dtime.Second)}.{CopyIntToString(3, dtime.Millisecond)}";
                     break;
                 case DateTimeKind.Local:
                     string offsetChar = (offset.Ticks >= 0L) ? "+" : "-";
-                    result += $"{CopyIntToString(4, dtime.Year)}-{CopyIntToString(2, dtime.Month)}-{CopyIntToString(2, dtime.Day)}T{CopyIntToString(2, dtime.Hour)}:{CopyIntToString(2, dtime.Minute)}:{CopyIntToString(2, dtime.Second)}.{CopyIntToString(3, dtime.Millisecond)}{offsetChar}{CopyIntToString(2, Math.Abs(offset.Hours))}:{CopyIntToString(2, Math.Abs(offset.Minutes))}";
+                    if (dtime.Millisecond == 0)
+                        result += $"{CopyIntToString(4, dtime.Year)}-{CopyIntToString(2, dtime.Month)}-{CopyIntToString(2, dtime.Day)}T{CopyIntToString(2, dtime.Hour)}:{CopyIntToString(2, dtime.Minute)}:{CopyIntToString(2, dtime.Second)}{offsetChar}{CopyIntToString(2, Math.Abs(offset.Hours))}:{CopyIntToString(2, Math.Abs(offset.Minutes))}";
+                    else
+                        result += $"{CopyIntToString(4, dtime.Year)}-{CopyIntToString(2, dtime.Month)}-{CopyIntToString(2, dtime.Day)}T{CopyIntToString(2, dtime.Hour)}:{CopyIntToString(2, dtime.Minute)}:{CopyIntToString(2, dtime.Second)}.{CopyIntToString(3, dtime.Millisecond)}{offsetChar}{CopyIntToString(2, Math.Abs(offset.Hours))}:{CopyIntToString(2, Math.Abs(offset.Minutes))}";
                     break;
             }
 

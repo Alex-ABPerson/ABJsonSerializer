@@ -21,3 +21,12 @@ I:\Desktop\HistamcomVB\ABJsonSerializer\QuickJsonSerialize\bin\Debug\ABJson.GDIS
 I:\Desktop\HistamcomVB\ABJsonSerializer\QuickJsonSerialize\bin\Debug\ABJson.GDISupport.pdb
 I:\Desktop\HistamcomVB\ABJsonSerializer\QuickJsonSerialize\bin\Debug\Newtonsoft.Json.dll
 I:\Desktop\HistamcomVB\ABJsonSerializer\QuickJsonSerialize\bin\Debug\Newtonsoft.Json.xml
+I:\Desktop\HistamcomVB\ABJsonSerializer\QuickJsonSerialize\bin\Debug\CsvHelper.dll
+I:\Desktop\HistamcomVB\ABJsonSerializer\QuickJsonSerialize\bin\Debug\Serialize.Linq.dll
+I:\Desktop\HistamcomVB\ABJsonSerializer\QuickJsonSerialize\bin\Debug\Whoa.dll
+I:\Desktop\HistamcomVB\ABJsonSerializer\QuickJsonSerialize\bin\Debug\YamlSerializer.dll
+I:\Desktop\HistamcomVB\ABJsonSerializer\QuickJsonSerialize\bin\Debug\YAXLib.dll
+I:\Desktop\HistamcomVB\ABJsonSerializer\QuickJsonSerialize\bin\Debug\CsvHelper.xml
+I:\Desktop\HistamcomVB\ABJsonSerializer\QuickJsonSerialize\bin\Debug\YAXLib.pdb
+I:\Desktop\HistamcomVB\ABJsonSerializer\QuickJsonSerialize\bin\Debug\YAXLib.xml
+I:\Desktop\HistamcomVB\ABJsonSerializer\QuickJsonSerialize\obj\Debug\QuickJsonSerialize.Form2.resources

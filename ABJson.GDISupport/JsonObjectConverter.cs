@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace ABJson.GDISupport
 {
@@ -27,17 +28,11 @@ namespace ABJson.GDISupport
                             .Select(field => field.Name)
                             .ToList();
 
-            fieldNames.AddRange(type.GetProperties(bindingFlags)
-                            .Select(field => field.Name)
-                            .ToList());
-
             List<Type> fieldTypes = type.GetFields(bindingFlags)
                                  .Select(field => field.FieldType)
                                  .ToList();
 
-            fieldTypes.AddRange(type.GetProperties(bindingFlags)
-                            .Select(field => field.PropertyType)
-                            .ToList());
+            for (int a = 0; a < fieldNames.Count; a++) if (fieldNames[a].StartsWith("<")) fieldNames[a] = fieldNames[a].Split('<')[1].Split('>')[0];
 
             string newJson = json;
             string[] newJsonLines;
@@ -60,7 +55,6 @@ namespace ABJson.GDISupport
                     {
                         JsonKeyValuePair jkvp = JsonDeserializer.Deserialize(str, fieldTypes[i]);
                         try { type.GetField(jkvp.name.ToString(), bindingFlags).SetValue(obj, jkvp.value); } catch { }
-                        try { type.GetProperty(jkvp.name.ToString(), bindingFlags).SetValue(obj, jkvp.value); } catch { }
                     }
                 }
             }
@@ -88,19 +82,13 @@ namespace ABJson.GDISupport
                             .Select(field => field.Name)
                             .ToList();
 
-            fieldNames.AddRange(obj.GetType().GetProperties(bindingFlags)
-                            .Select(field => field.Name)
-                            .ToList());
-
             var fieldValues = obj.GetType()
                                  .GetFields(bindingFlags)
                                  .Select(field => field.GetValue(obj))
                                  .ToList();
 
-            fieldValues.AddRange(obj.GetType()
-                                 .GetProperties(bindingFlags)
-                                 .Select(field => field.GetValue(obj))
-                                 .ToList());
+            
+            for (int a = 0; a < fieldNames.Count; a++) if (fieldNames[a].StartsWith("<")) fieldNames[a] = fieldNames[a].Split('<')[1].Split('>')[0];
 
             int i = 0;
             foreach (string fieldName in fieldNames) 

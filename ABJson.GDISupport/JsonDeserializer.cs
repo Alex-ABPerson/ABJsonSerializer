@@ -100,6 +100,9 @@ namespace ABJson.GDISupport
                 else if (typ == typeof(Rectangle))
                     ret.value = DeserializeRectangle(ret.value.ToString());
 
+                else if (typ == typeof(DateTime))
+                    ret.value = DeserializeRectangle(ret.value.ToString());
+
                 else if (typ == typeof(Color))
                     ret.value = new ColorConverter().ConvertFromString(ret.value.ToString());
 
@@ -211,6 +214,11 @@ namespace ABJson.GDISupport
             }
 
             return result;
+        }
+
+        public static dynamic DeserializeDateTime()
+        {
+            return null;
         }
     }
 

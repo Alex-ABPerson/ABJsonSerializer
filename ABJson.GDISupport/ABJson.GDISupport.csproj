@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ABInheritanceGuesser.cs" />
     <Compile Include="ImageToText.cs" />
     <Compile Include="JsonDeserializer.cs" />
     <Compile Include="JsonObjectConverter.cs" />
