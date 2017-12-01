@@ -65,23 +65,26 @@ namespace QuickJsonSerialize
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Stopwatch sw = Stopwatch.StartNew();
-
             Foo dtest = JsonClassConverter.ConvertJsonToObject<Foo>(textBox2.Text);
 
-            sw.Stop();
-
-            Console.WriteLine("TIME ELAPSED ABJSON: " + sw.ElapsedMilliseconds + "ms");
-
-            Stopwatch sw2 = Stopwatch.StartNew();
-
-            Foo dtest2 = Newtonsoft.Json.JsonConvert.DeserializeObject<Foo>(textBox2.Text);
-
-            sw2.Stop();
-
-            Console.WriteLine("TIME ELAPSED: " + sw2.ElapsedMilliseconds + "ms");
-
             MessageBox.Show(dtest.ToString());
+            //Stopwatch sw = Stopwatch.StartNew();
+
+            //Foo dtest = JsonClassConverter.ConvertJsonToObject<Foo>(textBox2.Text);
+
+            //sw.Stop();
+
+            //Console.WriteLine("TIME ELAPSED ABJSON: " + sw.ElapsedMilliseconds + "ms");
+
+            //Stopwatch sw2 = Stopwatch.StartNew();
+
+            //Foo dtest2 = Newtonsoft.Json.JsonConvert.DeserializeObject<Foo>(textBox2.Text);
+
+            //sw2.Stop();
+
+            //Console.WriteLine("TIME ELAPSED: " + sw2.ElapsedMilliseconds + "ms");
+
+            //MessageBox.Show(dtest.ToString());
         }
 
         private void button3_Click_1(object sender, EventArgs e)

@@ -101,7 +101,7 @@ namespace ABJson.GDISupport
                     ret.value = DeserializeRectangle(ret.value.ToString());
 
                 else if (typ == typeof(DateTime))
-                    ret.value = DeserializeRectangle(ret.value.ToString());
+                    ret.value = DeserializeDateTime(ret.value.ToString());
 
                 else if (typ == typeof(Color))
                     ret.value = new ColorConverter().ConvertFromString(ret.value.ToString());
@@ -216,9 +216,87 @@ namespace ABJson.GDISupport
             return result;
         }
 
-        public static dynamic DeserializeDateTime()
+        public static dynamic DeserializeDateTime(string dtime)
         {
-            return null;
+            // ISO Deserialization (Javascript Ticks coming soon! Don't worry :P )
+
+            // Calculate what kind this is.
+            DateTimeKind kind;
+            if (dtime.EndsWith("Z")) kind = DateTimeKind.Utc;
+            else if (dtime.Contains("+") || dtime.Contains("-")) kind = DateTimeKind.Local;
+            else kind = DateTimeKind.Unspecified;
+
+            int year = 0, month = 0, day = 0, hour = 0, minute = 0, second = 0, millisecond = 0;
+
+            dtime = dtime.Replace("Z", ""); // That "Z" is no longer needed! (If it is UTC)
+
+            // For DateTimeKind.Local
+
+            int localOffsetHour = 0, localOffsetMinute = 0;
+            long localOffset = 0;
+            bool localIsNegative = false;
+
+            // Get the bit before and after the "T".
+
+            // The date (before T) - year, month, day
+            string[] parts = dtime.Split('T');
+
+            if (parts.Length <= 0) return null;
+
+            string[] firstparts = parts[0].Split('-');
+
+            if (firstparts.Length > 0) year = int.Parse(firstparts[0]);
+            if (firstparts.Length > 1) month = int.Parse(firstparts[1]);
+            if (firstparts.Length > 2) day = int.Parse(firstparts[2]);
+
+            // The time (after T) - hour, minute, second, millisecond
+            if (parts.Length > 1)
+            {
+                string[] lastparts;
+                lastparts = parts[1].Split('+', '-')[0].Split(':');
+
+                if (lastparts.Length > 0) hour = int.Parse(lastparts[0]);
+                if (lastparts.Length > 1) minute = int.Parse(lastparts[1]);
+                if (lastparts.Length > 2) {
+                    if (lastparts[2].Contains("."))
+                    {
+                        second = int.Parse(lastparts[2].Split('.')[0]);
+                        millisecond = int.Parse(lastparts[2].Split('.')[1]);
+                    }
+                    else
+                        second = int.Parse(lastparts[2]);
+                }
+            }
+
+            if (kind == DateTimeKind.Local)
+            {
+                try
+                {
+                    string[] localparts = parts[1].Split('+', '-')[1].Split(':');
+
+                    localOffsetHour = int.Parse(localparts[0]);
+                    localOffsetMinute = int.Parse(localparts[1]);
+
+                    if (!dtime.Contains("+")) localIsNegative = true;
+
+                    localOffset = new TimeSpan(localOffsetHour, localOffsetMinute, 0).Ticks;
+                } catch { }
+            }
+            bool Is24Hour = false;
+            if (hour == 24)
+            {
+                Is24Hour = true;
+                hour = 0;
+            }
+
+            DateTime d = new DateTime(year, month, day, hour, minute, second, millisecond);
+
+            if (Is24Hour) d.AddDays(1);
+
+            if (localIsNegative)
+                return new DateTime(d.Ticks - localOffset, kind);
+            else
+                return new DateTime(d.Ticks + localOffset, kind);
         }
     }
 
