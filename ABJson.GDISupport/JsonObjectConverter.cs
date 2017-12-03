@@ -43,18 +43,24 @@ namespace ABJson.GDISupport
             //foreach (string str in newJsonLines) System.Windows.Forms.MessageBox.Show(str);
             if (string.IsNullOrEmpty(newJsonLines[newJsonLines.Length - 1])) Array.Resize(ref newJsonLines, newJsonLines.Length - 1); // Remove the last one if it is blank (essentially if some idiot puts "," at the end of the whole thing!)
 
+            // Check if it doesn't have the "ABJsonIgnore" attribute or the Newtonsoft.Json "JsonIgnore".
+            
+
             foreach (string str in newJsonLines)
             {
 
                 string name = JsonReader.GetKeyValueData(str).name.ToString();
 
-                //string fname = fieldNames.Find(item => item == JsonReader.GetKeyValueData(str).name);
+                
+              
+                //string fname = fieldNames.Find(item => item == JsonReader.GetKeyValueData(str).name);             
                 for (int i = 0; i < fieldNames.Count; i++)
                 {
                     if (fieldNames[i] == name)
                     {
-                        JsonKeyValuePair jkvp = JsonDeserializer.Deserialize(str, fieldTypes[i]);
-                        try { type.GetField(jkvp.name.ToString(), bindingFlags).SetValue(obj, jkvp.value); } catch { }
+                        
+                            JsonKeyValuePair jkvp = JsonDeserializer.Deserialize(str, fieldTypes[i]);
+                            try { type.GetField(jkvp.name.ToString(), bindingFlags).SetValue(obj, jkvp.value); } catch { }
                     }
                 }
             }
@@ -93,10 +99,13 @@ namespace ABJson.GDISupport
             int i = 0;
             foreach (string fieldName in fieldNames) 
             {
-                if (format == JsonFormatting.Indented)
-                    result += JsonWriter.Indent(JsonSerializer.Serialize(fieldName, fieldValues[i], format, identationLevel), identationLevel);
-                else
-                    result += JsonSerializer.Serialize(fieldName, fieldValues[i], format, identationLevel);
+                var pi = obj.GetType().GetField(fieldName);
+                if (!Attribute.IsDefined(pi, typeof(ABJsonIgnore)))
+                    if (format == JsonFormatting.Indented)
+                        result += JsonWriter.Indent(JsonSerializer.Serialize(fieldName, fieldValues[i], format, identationLevel), identationLevel);
+                    else
+                        result += JsonSerializer.Serialize(fieldName, fieldValues[i], format, identationLevel);
+
                 i++;
             }
 

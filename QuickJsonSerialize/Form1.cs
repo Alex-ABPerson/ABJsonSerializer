@@ -1,6 +1,7 @@
 ﻿using ABJson.GDISupport;
 using CsvHelper;
 using CsvHelper.Configuration;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Bson;
 using System;
 using System.Collections.Generic;
@@ -1553,7 +1554,7 @@ namespace QuickJsonSerialize
         public int anInt = 12349;
         public bool anBool = true;
         public string aNull = null;
-        public DateTime aDateTime = new DateTime(2005, 5, 3, 0, 0, 0, DateTimeKind.Local);
+        public DateTime aDateTime = new DateTime(2005, 5, 3, 3, 7, 9, DateTimeKind.Unspecified);
         public Point aPoint = new Point(3, 4);
         public Size aSize = new Size(30, 40);
         public Rectangle aRectangle = new Rectangle(5, 6, 7, 8);
