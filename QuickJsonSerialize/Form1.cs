@@ -25,6 +25,28 @@ namespace QuickJsonSerialize
     
     public partial class Form1 : Form
     {
+        InheritanceTest inheritancetest = new InheritanceTest()
+        {
+            normalstr = "Hello world!",
+            normalint = 452,
+            inherit1 = new InheritanceInherit1()
+            {
+                x = 52,
+                y = 2512,
+                zindex = 1,
+                clr1 = Color.FromArgb(4, 47, 132),
+                part1 = new Point(24, 7534),
+                part2 = new Point(24, 7534),
+            },
+            inherit2 = new InheritanceInherit2()
+            {
+                x = 253,
+                y = 2,
+                zindex = 2,
+                shapeType = 9
+            }
+        };
+
         public Form1()
         {
             InitializeComponent();
@@ -45,7 +67,8 @@ namespace QuickJsonSerialize
 
             Stopwatch sw = Stopwatch.StartNew();
 
-            string json = JsonClassConverter.ConvertObjectToJson(theFoo, JsonFormatting.Indented);
+            //string json = JsonClassConverter.ConvertObjectToJson(theFoo, JsonFormatting.Indented);
+            string json = JsonClassConverter.ConvertObjectToJson(inheritancetest, JsonFormatting.Indented);
 
             sw.Stop();
 
@@ -66,9 +89,11 @@ namespace QuickJsonSerialize
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Foo dtest = JsonClassConverter.ConvertJsonToObject<Foo>(textBox2.Text);
+            //Foo dtest = JsonClassConverter.ConvertJsonToObject<Foo>(textBox2.Text);
 
-            MessageBox.Show(dtest.ToString());
+            InheritanceTest itest = JsonClassConverter.ConvertJsonToObject<InheritanceTest>(textBox2.Text);
+
+            MessageBox.Show(itest.ToString());
             //Stopwatch sw = Stopwatch.StartNew();
 
             //Foo dtest = JsonClassConverter.ConvertJsonToObject<Foo>(textBox2.Text);
@@ -1448,6 +1473,35 @@ namespace QuickJsonSerialize
     //        Map(m => m.Popularity).Name("Popularity");
     //    }
     //}
+
+    public class InheritanceTest
+    {
+        public string normalstr;
+
+        public InheritanceBase inherit1;
+        public InheritanceBase inherit2;
+
+        public int normalint;
+    }
+
+    public class InheritanceBase
+    {
+        public int x;
+        public int y;
+        public int zindex;
+    }
+
+    public class InheritanceInherit1 : InheritanceBase
+    {
+        public Color clr1;
+        public Point part1;
+        public Point part2;
+    }
+
+    public class InheritanceInherit2 : InheritanceBase
+    {
+        public int shapeType;
+    }
 
     [Serializable]
     public class SerializersTest

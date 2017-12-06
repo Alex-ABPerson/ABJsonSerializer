@@ -94,7 +94,11 @@ namespace ABJson.GDISupport
         {
             // Convert the result into a nicely grouped array.
             List<ABInheritanceGuesserObject> objects = new List<ABInheritanceGuesserObject>();
-            for (int i = 0; i < names.Length; i++) objects.Add(new ABInheritanceGuesserObject(names[i], types[i]));
+
+            if (types == null)
+                for (int i = 0; i < names.Length; i++) objects.Add(new ABInheritanceGuesserObject(names[i], null));
+            else
+                for (int i = 0; i < names.Length; i++) objects.Add(new ABInheritanceGuesserObject(names[i], types[i]));
 
             return GetBestInheritanceInternal(baseType, objects);
         }
@@ -210,6 +214,8 @@ namespace ABJson.GDISupport
                     } else NameOff = true;
                 } catch { NameOff = true; TypeOff = true; } // If it fails we have gone beyond all the items it has! Meaning this type will be NoCorrelation!
 
+                if (TypeOff && obj.Type == null) TypeOff = false; // This just means that whoever called this function didn't provide types!
+
                 if (NameOff) currentmatch = InheritanceGuesserMatch.NameOff;
                 if (TypeOff) currentmatch = InheritanceGuesserMatch.TypeOff;
 
@@ -254,6 +260,13 @@ namespace ABJson.GDISupport
             return typeof(T).Assembly.GetTypes()
                         .Where(t => t.IsSubclassOf(typeof(T)) && t.GetConstructor(Type.EmptyTypes) != null)
                         .Select(t => Activator.CreateInstance(t) as T);
+        }
+
+        public static bool HasInheriter(Type typ)
+        {
+            return (typ.Assembly.GetTypes()
+                        .Where(t => t.IsSubclassOf(typ) && t.GetConstructor(Type.EmptyTypes) != null)
+                        .Select(t => Activator.CreateInstance(t)).Count() > 0);
         }
     }
 }

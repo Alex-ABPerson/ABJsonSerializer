@@ -148,7 +148,7 @@ namespace ABJson.GDISupport
             // Runs JsonClassConverter.ConvertJsonToObject with the type parsed in!
             MethodInfo method = typeof(JsonClassConverter).GetMethod("ConvertJsonToObject");
             MethodInfo generic = method.MakeGenericMethod(typ);
-            dynamic value = generic.Invoke(null, new object[] { json });
+            dynamic value = generic.Invoke(null, new object[] { json, true });
 
             return value;
         }

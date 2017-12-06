@@ -11,13 +11,40 @@ namespace ABJson.GDISupport
 {
     public static class JsonClassConverter
     {
-        public static T ConvertJsonToObject<T>(string json)
+        public static T ConvertJsonToObject<T>(string json, bool GuessInheritance = false)
         {
-            return (T)DeserializeObjectInternal(json, typeof(T));
+            return (T)DeserializeObjectInternal(json, typeof(T), GuessInheritance);
         }
 
-        internal static object DeserializeObjectInternal(string json, Type type)
+        internal static object DeserializeObjectInternal(string json, Type type, bool GuessInheritance = false)
         {
+            // Now get each value seperately
+            string newJson = json;
+
+            // Strip out the starting "{" and "}"
+            newJson = json.Trim().TrimStart('{').TrimEnd().TrimEnd('}');
+            string[] newJsonLines;
+
+            List<JsonKeyValuePair> jsonObjects = new List<JsonKeyValuePair>();
+            newJsonLines = JsonReader.GetAllKeyValues(newJson);
+            //foreach (string str in newJsonLines) System.Windows.Forms.MessageBox.Show(str);
+            if (string.IsNullOrEmpty(newJsonLines[newJsonLines.Length - 1])) Array.Resize(ref newJsonLines, newJsonLines.Length - 1); // Remove the last one if it is blank (essentially if some idiot puts "," at the end of the whole thing!)
+
+            List<string> names = new List<string>();
+
+            foreach (string str in newJsonLines)
+            {
+                JsonKeyValuePair jkvp = JsonReader.GetKeyValueData(str);
+                jsonObjects.Add(jkvp);
+                names.Add(jkvp.name.ToString());
+            }
+
+            if (GuessInheritance)
+            {
+                if (ABInheritanceGuesser.HasInheriter(type))
+                    type = ABInheritanceGuesser.GetBestInheritanceInternal(type, names.ToArray(), null);
+            }
+
             object obj = Activator.CreateInstance(type);
 
             var bindingFlags = BindingFlags.Instance |
@@ -32,17 +59,8 @@ namespace ABJson.GDISupport
                                  .Select(field => field.FieldType)
                                  .ToList();
 
-            for (int a = 0; a < fieldNames.Count; a++) if (fieldNames[a].StartsWith("<")) fieldNames[a] = fieldNames[a].Split('<')[1].Split('>')[0];
-
-            string newJson = json;
-            string[] newJsonLines;
-            // Strip out the starting "{" and "}"
-            newJson = json.Trim().TrimStart('{').TrimEnd().TrimEnd('}');
-            // Now get each value seperately
-            newJsonLines = JsonReader.GetAllKeyValues(newJson);
-            //foreach (string str in newJsonLines) System.Windows.Forms.MessageBox.Show(str);
-            if (string.IsNullOrEmpty(newJsonLines[newJsonLines.Length - 1])) Array.Resize(ref newJsonLines, newJsonLines.Length - 1); // Remove the last one if it is blank (essentially if some idiot puts "," at the end of the whole thing!)
-
+            for (int a = 0; a < fieldNames.Count; a++) if (fieldNames[a].StartsWith("<")) fieldNames[a] = fieldNames[a].Split('<')[1].Split('>')[0];      
+                     
             // Check if it doesn't have the "ABJsonIgnore" attribute or the Newtonsoft.Json "JsonIgnore".
             
 
@@ -50,15 +68,12 @@ namespace ABJson.GDISupport
             {
 
                 string name = JsonReader.GetKeyValueData(str).name.ToString();
-
-                
               
                 //string fname = fieldNames.Find(item => item == JsonReader.GetKeyValueData(str).name);             
                 for (int i = 0; i < fieldNames.Count; i++)
                 {
                     if (fieldNames[i] == name)
-                    {
-                        
+                    {                        
                             JsonKeyValuePair jkvp = JsonDeserializer.Deserialize(str, fieldTypes[i]);
                             try { type.GetField(jkvp.name.ToString(), bindingFlags).SetValue(obj, jkvp.value); } catch { }
                     }
