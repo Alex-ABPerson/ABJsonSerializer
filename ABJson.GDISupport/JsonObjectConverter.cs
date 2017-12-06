@@ -66,16 +66,15 @@ namespace ABJson.GDISupport
 
             foreach (string str in newJsonLines)
             {
-
-                string name = JsonReader.GetKeyValueData(str).name.ToString();
+                JsonKeyValuePair data = JsonReader.GetKeyValueData(str);
               
                 //string fname = fieldNames.Find(item => item == JsonReader.GetKeyValueData(str).name);             
                 for (int i = 0; i < fieldNames.Count; i++)
                 {
-                    if (fieldNames[i] == name)
-                    {                        
-                            JsonKeyValuePair jkvp = JsonDeserializer.Deserialize(str, fieldTypes[i]);
-                            try { type.GetField(jkvp.name.ToString(), bindingFlags).SetValue(obj, jkvp.value); } catch { }
+                    if (fieldNames[i] == data.name.ToString())
+                    {
+                        JsonKeyValuePair jkvp = JsonDeserializer.Deserialize(str, fieldTypes[i], false, data);
+                        try { type.GetField(jkvp.name.ToString(), bindingFlags).SetValue(obj, jkvp.value); } catch { }
                     }
                 }
             }

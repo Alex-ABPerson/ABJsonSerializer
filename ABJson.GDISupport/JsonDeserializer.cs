@@ -60,12 +60,14 @@ namespace ABJson.GDISupport
             return (T)Deserialize(json, typeof(T), onlyValue).value;
         }
 
-        public static JsonKeyValuePair Deserialize(string json, Type typ, bool onlyValue = false)
+        public static JsonKeyValuePair Deserialize(string json, Type typ, bool onlyValue = false, JsonKeyValuePair existing_jkvp = null)
         {
-
             JsonKeyValuePair ret = new JsonKeyValuePair();
 
-            if (onlyValue) ret.value = json; else ret = JsonReader.GetKeyValueData(json);
+            if (existing_jkvp == null)
+                if (onlyValue) ret.value = json; else ret = JsonReader.GetKeyValueData(json);
+            else
+                ret = existing_jkvp;
 
             if (ret.value.ToString() == "null")
                 ret.value = null;
