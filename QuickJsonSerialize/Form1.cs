@@ -1612,6 +1612,7 @@ namespace QuickJsonSerialize
         public Point aPoint = new Point(3, 4);
         public Size aSize = new Size(30, 40);
         public Rectangle aRectangle = new Rectangle(5, 6, 7, 8);
+        public Font fnt = new Font("Microsoft Sans Serif", 12f, FontStyle.Bold);
         //public Image anImage = Properties.Resources.what_you_on_about_1_;
         public Color clr = Color.Black;
         public Dictionary<string, string[]> aDictionary = new Dictionary<string, string[]>();

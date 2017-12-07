@@ -113,8 +113,15 @@ namespace ABJson.GDISupport
             int i = 0;
             foreach (string fieldName in fieldNames) 
             {
-                var pi = obj.GetType().GetField(fieldName);
-                if (!Attribute.IsDefined(pi, typeof(ABJsonIgnore)))
+                bool serialize = true;
+
+                try
+                {
+                    var pi = obj.GetType().GetField(fieldName);
+                    if (!Attribute.IsDefined(pi, typeof(ABJsonIgnore))) serialize = false;
+                } catch { }
+
+                if (serialize)
                     if (format == JsonFormatting.Indented)
                         result += JsonWriter.Indent(JsonSerializer.Serialize(fieldName, fieldValues[i], format, identationLevel), identationLevel);
                     else
@@ -123,7 +130,7 @@ namespace ABJson.GDISupport
                 i++;
             }
 
-            result = result.Remove(result.LastIndexOf(','), 1);
+            result = result.TrimEnd().TrimEnd(',');
 
             if (format == JsonFormatting.Compact)
                 result += "}";
