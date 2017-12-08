@@ -108,16 +108,25 @@ namespace ABJson.GDISupport
                 if (justValue) result += JsonWriter.WriteValue(ImageToText.ConvertImageToText((Image)obj, System.Drawing.Imaging.ImageFormat.Png), JsonKeyValueType.Text, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, ImageToText.ConvertImageToText((Image)obj, System.Drawing.Imaging.ImageFormat.Png), JsonKeyValueType.Text, format, indentLevel);
 
             else if (obj is Point)
-                if (justValue) result += JsonWriter.WriteValue(((Point)obj).X.ToString() + "," + ((Point)obj).Y.ToString(), JsonKeyValueType.Text, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, ((Point)obj).X.ToString() + "," + ((Point)obj).Y.ToString(), JsonKeyValueType.Text, format, indentLevel);
+                if (justValue) result += JsonWriter.WriteValue(new PointConverter().ConvertToString(obj), JsonKeyValueType.Text, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, new PointConverter().ConvertToString(obj), JsonKeyValueType.Text, format, indentLevel);
 
             else if (obj is Size)
-                if (justValue) result += JsonWriter.WriteValue(((Size)obj).Width.ToString() + "," + ((Size)obj).Height.ToString(), JsonKeyValueType.Text, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, ((Size)obj).Width.ToString() + "," + ((Size)obj).Height.ToString(), JsonKeyValueType.Text, format, indentLevel);
+                if (justValue) result += JsonWriter.WriteValue(new SizeConverter().ConvertToString(obj), JsonKeyValueType.Text, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, new SizeConverter().ConvertToString(obj), JsonKeyValueType.Text, format, indentLevel);
 
             else if (obj is Rectangle)
-                if (justValue) result += JsonWriter.WriteValue(((Rectangle)obj).X.ToString() + "," + ((Rectangle)obj).Y.ToString() + "," + ((Rectangle)obj).Width.ToString() + "," + ((Rectangle)obj).Height.ToString(), JsonKeyValueType.Text, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, ((Rectangle)obj).X.ToString() + "," + ((Rectangle)obj).Y.ToString() + "," + ((Rectangle)obj).Width.ToString() + "," + ((Rectangle)obj).Height.ToString(), JsonKeyValueType.Text, format, indentLevel);
+                if (justValue) result += JsonWriter.WriteValue(new RectangleConverter().ConvertToString(obj), JsonKeyValueType.Text, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, new RectangleConverter().ConvertToString(obj), JsonKeyValueType.Text, format, indentLevel);
 
             else if (obj is Color)
                 if (justValue) result += JsonWriter.WriteValue(new ColorConverter().ConvertToString(obj), JsonKeyValueType.Text, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, new ColorConverter().ConvertToString(obj), JsonKeyValueType.Text, format, indentLevel);
+
+            else if (obj is Font)
+                if (justValue) result += JsonWriter.WriteValue(new FontConverter().ConvertToString(obj), JsonKeyValueType.Text, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, new FontConverter().ConvertToString(obj), JsonKeyValueType.Text, format, indentLevel);
+
+            else if (obj is char)
+                if (justValue) result += JsonWriter.WriteValue(new CharConverter().ConvertToString(obj), JsonKeyValueType.Text, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, new CharConverter().ConvertToString(obj), JsonKeyValueType.Text, format, indentLevel);
+
+            else if (obj is Guid)
+                if (justValue) result += JsonWriter.WriteValue(new GuidConverter().ConvertToString(obj), JsonKeyValueType.Text, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, new GuidConverter().ConvertToString(obj), JsonKeyValueType.Text, format, indentLevel);
 
             else if (justValue) result += JsonWriter.WriteValue(obj, JsonKeyValueType.Object, format, indentLevel); else result += JsonWriter.WriteKeyValuePair(name, obj, JsonKeyValueType.Object, format, indentLevel);
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
@@ -94,19 +95,28 @@ namespace ABJson.GDISupport
                     ret.value = ImageToText.ConvertTextToImage(ret.value.ToString());
 
                 else if (typ == typeof(Point))
-                    ret.value = DeserializePoint(ret.value.ToString());
+                    ret.value = new PointConverter().ConvertFromString(ret.value.ToString());
 
                 else if (typ == typeof(Size))
-                    ret.value = DeserializeSize(ret.value.ToString());
+                    ret.value = new SizeConverter().ConvertFromString(ret.value.ToString());
 
                 else if (typ == typeof(Rectangle))
-                    ret.value = DeserializeRectangle(ret.value.ToString());
+                    ret.value = new RectangleConverter().ConvertFromString(ret.value.ToString());
 
                 else if (typ == typeof(DateTime))
                     ret.value = DeserializeDateTime(ret.value.ToString());
 
                 else if (typ == typeof(Color))
                     ret.value = new ColorConverter().ConvertFromString(ret.value.ToString());
+
+                else if (typ == typeof(Font))
+                    ret.value = new FontConverter().ConvertFromString(ret.value.ToString());
+
+                else if (typ == typeof(char))
+                    ret.value = new CharConverter().ConvertFromString(ret.value.ToString());
+
+                else if (typ == typeof(Guid))
+                    ret.value = new GuidConverter().ConvertFromString(ret.value.ToString());
 
                 else if (typ != typeof(string))
                     ret.value = DeserializeObject(ret.value.ToString(), typ);

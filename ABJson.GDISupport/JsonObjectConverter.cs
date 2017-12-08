@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.ComponentModel;
+using System.Globalization;
 
 namespace ABJson.GDISupport
 {
@@ -83,9 +85,20 @@ namespace ABJson.GDISupport
         }
 
         public static string ConvertObjectToJson(object obj, JsonFormatting format = JsonFormatting.Indented, int identationLevel = 1)
-        {            
-
+        {
             string result = "";
+
+            #region WIP
+            // Check if it is a type that needs to be serialized into a string and not any other way, and if so, serialize it the primitive way!
+
+            //bool StringSerialize = false; // Whether it will be serialized to a string or object (String = "", Object = {})
+            //IConvertible convertible = obj as IConvertible;
+
+            //TypeCode typCode = convertible.GetTypeCode();
+
+            //string convertedValue = (string)convertible.ToType(typeof(string), CultureInfo.InvariantCulture);
+            // If it is an "object" then go ahead and put it into a string.
+            #endregion
 
             if (format == JsonFormatting.Compact)
                 result = "{";
@@ -118,7 +131,7 @@ namespace ABJson.GDISupport
                 try
                 {
                     var pi = obj.GetType().GetField(fieldName);
-                    if (!Attribute.IsDefined(pi, typeof(ABJsonIgnore))) serialize = false;
+                    if (Attribute.IsDefined(pi, typeof(ABJsonIgnore))) serialize = false;
                 } catch { }
 
                 if (serialize)
@@ -137,7 +150,7 @@ namespace ABJson.GDISupport
             else if (format == JsonFormatting.CompactReadable)
                 result += " }";
             else if (format == JsonFormatting.Indented)
-                result += "}";
+                result += $"{Environment.NewLine}}}";
 
             return result;
         }

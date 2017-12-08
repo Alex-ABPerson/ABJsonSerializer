@@ -64,11 +64,10 @@ namespace QuickJsonSerialize
             theFoo.aDictionary.Add("Hello1", new string[] { "Key1", "Key2" });
             theFoo.aDictionary.Add("Hello2", new string[] { "Key2-3", "Key2-2" });
 
-
             Stopwatch sw = Stopwatch.StartNew();
 
-            //string json = JsonClassConverter.ConvertObjectToJson(theFoo, JsonFormatting.Indented);
-            string json = JsonClassConverter.ConvertObjectToJson(inheritancetest, JsonFormatting.Indented);
+            string json = JsonClassConverter.ConvertObjectToJson(theFoo, JsonFormatting.Indented);
+            //string json = JsonClassConverter.ConvertObjectToJson(inheritancetest, JsonFormatting.Indented);
 
             sw.Stop();
 
@@ -1612,6 +1611,9 @@ namespace QuickJsonSerialize
         public Point aPoint = new Point(3, 4);
         public Size aSize = new Size(30, 40);
         public Rectangle aRectangle = new Rectangle(5, 6, 7, 8);
+
+        public string[,] multidimensional = new string[,] { {"Item1-1", "Item1-2"}, {"Item2-1", "Item2-2"}};
+
         public Font fnt = new Font("Microsoft Sans Serif", 12f, FontStyle.Bold);
         //public Image anImage = Properties.Resources.what_you_on_about_1_;
         public Color clr = Color.Black;
