@@ -168,7 +168,7 @@ namespace ABJson.GDISupport
             foreach (dynamic dym in obj)
             {
                 if (currentRank < Arrays.Count - 1)
-                    if ((obj.GetLength(currentRank)) == i)
+                    if ((obj.GetLength(currentRank) - 1) == i)
                     {
                         currentRank++;
                         i = 0;
