@@ -314,7 +314,7 @@ namespace ABJson.GDISupport
 
     public class JsonKeyValuePair
     {
-        public object name;
+        public object name = "";
         public object value;
         public JsonKeyValueType type;
     }
