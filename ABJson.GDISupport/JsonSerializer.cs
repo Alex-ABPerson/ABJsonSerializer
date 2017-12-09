@@ -133,61 +133,59 @@ namespace ABJson.GDISupport
             return result;
         }
 
-        //// A bit of a hack to only do the X and Y of a point!
-        //public static string SerializePoint(Point pnt, JsonFormatting format, int indent)
-        //{
-        //    string result = "";
-        //    if (format == JsonFormatting.Compact)
-        //        result = $"\"X\":\"{pnt.X}\",\"Y\":\"{pnt.Y}\"";
-        //    else if (format == JsonFormatting.CompactReadable)
-        //        result = $"\"X\": \"{pnt.X}, \"Y\": \"{pnt.Y}\"";
-        //    else if (format == JsonFormatting.Indented)
-        //        result = $"\"X\": \"{pnt.X}\",{Environment.NewLine}\"Y\": \"{pnt.Y}\"";
-
-        //    return "{" + Environment.NewLine + JsonWriter.Indent(result, indent) + "}";
-        //}
-
-        //// A bit of a hack to only do the Width and Height of a size!
-        //public static string SerializeSize(Size siz, JsonFormatting format, int indent)
-        //{
-        //    string result = "";
-        //    if (format == JsonFormatting.Compact)
-        //        result = $"\"Width\":{siz.Width},\"Height\":{siz.Height}}}";
-        //    else if (format == JsonFormatting.CompactReadable)
-        //        result = $"\"Width\": {siz.Width}, \"Height\": {siz.Height}}}";
-        //    else if (format == JsonFormatting.Indented)
-        //        result = $"\"Width\": {siz.Width},{Environment.NewLine}\"Height\": {siz.Height}";
-
-        //    return "{" + Environment.NewLine + JsonWriter.Indent(result, indent) + "}";
-        //}
-
-        //// A bit of a hack to only do the X, Y, Width and Height of a rectangle!
-        //public static string SerializeRectangle(Rectangle rect, JsonFormatting format, int indent)
-        //{
-        //    string result = "";
-        //    if (format == JsonFormatting.Compact)
-        //        result = $"\"X\":{rect.X},\"Y\":{rect.Y},\"Width\":{rect.Width},\"Height\":{rect.Height}";
-        //    else if (format == JsonFormatting.CompactReadable)
-        //        result = $"\"X\": {rect.X}, \"Y\": {rect.Y}\"Width\": {rect.Width}, \"Height\": {rect.Height}";
-        //    else if (format == JsonFormatting.Indented)
-        //        result = $"\"X\": {rect.X},{Environment.NewLine}\"Y\": {rect.Y},{Environment.NewLine}\"Width\": {rect.Width},{Environment.NewLine}\"Height\": {rect.Height}{Environment.NewLine}";
-
-        //    return "{" + Environment.NewLine + JsonWriter.Indent(result, indent) + "}";
-        //}
-
         public static string SerializeArray(dynamic obj, JsonFormatting format, int indent)
         {
-            string result = "";
 
+            // Check if array is multi-dimensional
+
+            if (obj is Array && ((Array)obj).Rank >= 2)
+                return SerializeMultiDimensionalArray(obj, format, indent);
+
+            string result = "";
             
             foreach (object element in obj)
                 result += Serialize("", element, format, indent, true);
 
-            result = result.Remove(result.LastIndexOf(','), 1);
+            result = result.TrimEnd().TrimEnd(',');
             if (format == JsonFormatting.Indented)
                 result = JsonWriter.Indent(result, indent);
 
             return result;
+        }
+
+        public static string SerializeMultiDimensionalArray(Array obj, JsonFormatting format, int indent)
+        {
+            string result = "";
+
+            List<List<dynamic>> Arrays = new List<List<dynamic>>();
+            List<int> lengths = new List<int>();
+
+            for (int a = 0; a < obj.Rank; a++)
+                Arrays.Add(new List<dynamic>());
+
+            int currentRank = 0;
+            int i = 0;
+            foreach (dynamic dym in obj)
+            {
+                if (currentRank < Arrays.Count - 1)
+                    if ((obj.GetLength(currentRank)) == i)
+                    {
+                        currentRank++;
+                        i = 0;
+                        Arrays[currentRank].Add(dym);                    
+                    } else {
+                        Arrays[currentRank].Add(dym);
+                        i++;
+                    }               
+            }
+
+            foreach (List<dynamic> itm in Arrays)
+                result += Serialize("", itm, format, indent - 1, true);
+
+            if (format == JsonFormatting.Indented)
+                result = JsonWriter.Indent(result, indent);
+            return result;
+            // ((Array)obj).GetLength(0)
         }
 
         public static string SerializeDictionary(dynamic obj, JsonFormatting format, int indent)
