@@ -192,11 +192,14 @@ namespace ABJson.GDISupport
             int innerLevel = 0; // This is so if (for example) we have an array like this: [["Hello1-1", "Hello1-2"], ["Hello2-1", "Hello2-2"]] it doesn't stop at the first square bracket like this: [["Hello1-1", "Hello1-2"]
             bool IsInValue = false;
             bool IsInName = false;
+            bool IsInString = false;
             bool hasFinishedName = false;
             bool receivedCommentFirstChar = false;
             bool IsInComment = false;
             bool CommentIsNewLineEnding = false;
+
             char EndChar = '"';
+            char StringType = '"';
 
             foreach (char ch in json)
             {
@@ -225,7 +228,7 @@ namespace ABJson.GDISupport
                         {
                             case '/':
                                 if (!IsInName)
-                                    if (!IsInValue)
+                                    if (!IsInString)
                                         if (receivedCommentFirstChar)
                                         { // This is a "//" comment!
                                             IsInComment = true;
@@ -248,6 +251,15 @@ namespace ABJson.GDISupport
                             case '\'':
                             case '"':
                                 receivedCommentFirstChar = false;
+
+                                if (IsInString)
+                                    if (StringType == ch)
+                                        IsInString = false;
+                                else
+                                {
+                                    IsInString = true;
+                                    StringType = ch;
+                                }
 
                                 if (hasFinishedName)
                                     if (IsInValue)
