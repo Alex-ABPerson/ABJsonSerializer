@@ -108,7 +108,7 @@ namespace ABJson.GDISupport
         public static string Indent(string value, int size)
         {
             string str = "";
-            var strArray = value.Split('\n');
+            var strArray = value.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var s in strArray)
                 if (s != "")
                     str += new string(' ', size * 4) + s + $"{Environment.NewLine}";

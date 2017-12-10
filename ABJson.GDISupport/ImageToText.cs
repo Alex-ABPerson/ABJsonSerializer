@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -14,15 +15,22 @@ namespace ABJson.GDISupport
 
         public static string ConvertImageToText(Image image, System.Drawing.Imaging.ImageFormat format)
         {
-            using (MemoryStream ms = new MemoryStream())
-            {
-                // Convert Image to byte[]
-                image.Save(ms, format);
-                byte[] imageBytes = ms.ToArray();
+            //using (MemoryStream ms = new MemoryStream())
+            //{
+            //    // Convert Image to byte[]
+            //    image.Save(ms, format);
+            //    byte[] imageBytes = ms.ToArray();
 
-                // Convert byte[] to Base64 String
-                string base64String = Convert.ToBase64String(imageBytes);
-                return base64String;
+            //    // Convert byte[] to Base64 String
+            //    string base64String = Convert.ToBase64String(imageBytes);
+            //    return base64String;
+            //}
+
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                image.Save(memoryStream, ImageFormat.Png);
+                byte[] bitmapBytes = memoryStream.GetBuffer();
+                return Convert.ToBase64String(bitmapBytes);
             }
         }
 
@@ -45,17 +53,22 @@ namespace ABJson.GDISupport
             }
         }
 
-        public static Image ConvertTextToImage(string base64String)
+        public static Bitmap ConvertTextToImage(string base64String)
         {
-            // Convert Base64 String to byte[]
-            byte[] imageBytes = Convert.FromBase64String(base64String);
-            MemoryStream ms = new MemoryStream(imageBytes, 0,
-              imageBytes.Length);
+            Console.WriteLine("YOY-ISH!");
+            //// Convert Base64 String to byte[]
+            //byte[] imageBytes = Convert.FromBase64String(base64String);
+            //MemoryStream ms = new MemoryStream(imageBytes, 0,
+            //  imageBytes.Length);
 
-            // Convert byte[] to Image
-            ms.Write(imageBytes, 0, imageBytes.Length);
-            Image image = Image.FromStream(ms, true);
-            return image;
+            //// Convert byte[] to Image
+            //ms.Write(imageBytes, 0, imageBytes.Length);
+            //Image image = Image.FromStream(ms, true);
+            //return image;
+
+            byte[] bitmapBytes = Convert.FromBase64String(base64String);
+            using (MemoryStream memoryStream = new MemoryStream(bitmapBytes))
+                return (Bitmap)Image.FromStream(memoryStream);
         }
     }
 }

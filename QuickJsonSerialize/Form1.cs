@@ -64,6 +64,8 @@ namespace QuickJsonSerialize
             theFoo.aDictionary.Add("Hello1", new string[] { "Key1", "Key2" });
             theFoo.aDictionary.Add("Hello2", new string[] { "Key2-3", "Key2-2" });
 
+            theFoo.anImage = Properties.Resources.test_image;
+
             Stopwatch sw = Stopwatch.StartNew();
 
             string json = JsonClassConverter.ConvertObjectToJson(theFoo, JsonFormatting.Indented);
@@ -90,7 +92,7 @@ namespace QuickJsonSerialize
         {
             //Foo dtest = JsonClassConverter.ConvertJsonToObject<Foo>(textBox2.Text);
 
-            InheritanceTest itest = JsonClassConverter.ConvertJsonToObject<InheritanceTest>(textBox2.Text);
+            Foo itest = JsonClassConverter.ConvertJsonToObject<Foo>(textBox2.Text);
 
             MessageBox.Show(itest.ToString());
             //Stopwatch sw = Stopwatch.StartNew();
@@ -1615,7 +1617,7 @@ namespace QuickJsonSerialize
         public string[,] multidimensional = new string[,] { { "Item1-1", "Item1-2" }, { "Item2-1", "Item2-2" }, { "Item3-1", "Item3-2" } };
 
         public Font fnt = new Font("Microsoft Sans Serif", 12f, FontStyle.Bold);
-        //public Image anImage = Properties.Resources.what_you_on_about_1_;
+        public Image anImage;
         public Color clr = Color.Black;
         public Dictionary<string, string[]> aDictionary = new Dictionary<string, string[]>();
         public List<Bar> aBar = new List<Bar>()

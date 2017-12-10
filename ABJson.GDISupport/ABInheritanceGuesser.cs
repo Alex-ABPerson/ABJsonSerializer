@@ -123,8 +123,6 @@ namespace ABJson.GDISupport
                 if (summaries[i].TotalAmountOff == 0 && summaries[i].TotalAmountPerfect > 0)                  
                     return obj.GetType(); // This means it is perfect - same amount of types and everything! Use this!
 
-                Console.WriteLine("nyah " + obj.GetType());
-
                 i++;
             }
 

@@ -239,21 +239,33 @@ namespace ABJson.GDISupport
                                 if (!IsInName)
                                     if (!IsInValue)
                                         if (receivedCommentFirstChar)
-                                            { // This is a "/*" comment!
-                                                IsInComment = true;
-                                                CommentIsNewLineEnding = false;
-                                            }
+                                        { // This is a "/*" comment!
+                                            IsInComment = true;
+                                            CommentIsNewLineEnding = false;
+                                        }
 
                                 break;
                             case '\'':
                             case '"':
                                 receivedCommentFirstChar = false;
-                                if (EndChar == ch)
-                                {
-                                    if (hasFinishedName) if (IsInValue) IsInValue = false; else IsInValue = true;
+
+                                if (hasFinishedName)
+                                    if (IsInValue)
+                                    {
+                                        if (EndChar == ch) IsInValue = false;
+                                    }
                                     else
-                                        if (IsInName) IsInName = false; else IsInName = true;
-                                }
+                                    {
+                                        IsInValue = true;
+                                        EndChar = ch;
+                                    }
+                                else
+                                    if (IsInName)
+                                    {
+                                        if (EndChar == ch) IsInName = false;
+                                    }
+                                    else { IsInName = true; EndChar = ch; }
+
                                 break;
                             case ':':
                                 receivedCommentFirstChar = false;
@@ -297,7 +309,6 @@ namespace ABJson.GDISupport
                                     IsInValue = false;
                                     IsInName = false;
                                 }
-
                                 
                                 break;
                             default:
