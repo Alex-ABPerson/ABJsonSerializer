@@ -24,7 +24,7 @@ namespace ABJson.GDISupport
             string newJson = json;
 
             // Strip out the starting "{" and "}"
-            newJson = json.Trim().TrimStart('{').TrimEnd().TrimEnd('}');
+            newJson = json.Trim().TrimStart(',').Trim().TrimStart('{').TrimEnd().TrimEnd('}');
             string[] newJsonLines;
 
             List<JsonKeyValuePair> jsonObjects = new List<JsonKeyValuePair>();
@@ -36,6 +36,8 @@ namespace ABJson.GDISupport
 
             foreach (string str in newJsonLines)
             {
+                //Console.WriteLine("ULTRA-DEBUG STUFFS: " + str);
+
                 JsonKeyValuePair jkvp = JsonReader.GetKeyValueData(str);
                 jsonObjects.Add(jkvp);
                 names.Add(jkvp.name.ToString());
@@ -61,22 +63,22 @@ namespace ABJson.GDISupport
                                  .Select(field => field.FieldType)
                                  .ToList();
 
-            for (int a = 0; a < fieldNames.Count; a++) if (fieldNames[a].StartsWith("<")) fieldNames[a] = fieldNames[a].Split('<')[1].Split('>')[0];      
-                     
-            // Check if it doesn't have the "ABJsonIgnore" attribute or the Newtonsoft.Json "JsonIgnore".
-            
+            for (int a = 0; a < fieldNames.Count; a++) if (fieldNames[a].StartsWith("<")) fieldNames[a] = fieldNames[a].Split('<')[1].Split('>')[0];            
 
-            foreach (string str in newJsonLines)
+            for (int j = 0; j < newJsonLines.Length; j++)
             {
-                JsonKeyValuePair data = JsonReader.GetKeyValueData(str);
+                JsonKeyValuePair data = jsonObjects[j];
               
                 //string fname = fieldNames.Find(item => item == JsonReader.GetKeyValueData(str).name);             
                 for (int i = 0; i < fieldNames.Count; i++)
                 {
                     if (fieldNames[i] == data.name.ToString())
                     {
-                        JsonKeyValuePair jkvp = JsonDeserializer.Deserialize(str, fieldTypes[i], false, data);
-                        try { type.GetField(jkvp.name.ToString(), bindingFlags).SetValue(obj, Convert.ChangeType(jkvp.value, jkvp.value.GetType())); } catch { }
+                        
+
+                        JsonKeyValuePair jkvp = JsonDeserializer.Deserialize(newJsonLines[j], fieldTypes[i], false, data);
+
+                        try { type.GetField(jkvp.name.ToString(), bindingFlags).SetValue(obj, jkvp.value); } catch { }
                     }
                 }
             }

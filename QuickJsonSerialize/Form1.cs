@@ -64,11 +64,11 @@ namespace QuickJsonSerialize
             theFoo.aDictionary.Add("Hello1", new string[] { "Key1", "Key2" });
             theFoo.aDictionary.Add("Hello2", new string[] { "Key2-3", "Key2-2" });
 
-            theFoo.anImage = Properties.Resources.test_image;
+            ((Brush)theFoo.aBar[1]).brushPoints = Properties.Resources.test_image;
 
             Stopwatch sw = Stopwatch.StartNew();
 
-            string json = JsonClassConverter.ConvertObjectToJson(theFoo, JsonFormatting.Indented);
+            string json = JsonClassConverter.ConvertObjectToJson(theFoo, JsonFormatting.Compact);
             //string json = JsonClassConverter.ConvertObjectToJson(inheritancetest, JsonFormatting.Indented);
 
             sw.Stop();
@@ -1617,29 +1617,30 @@ namespace QuickJsonSerialize
         public string[,] multidimensional = new string[,] { { "Item1-1", "Item1-2" }, { "Item2-1", "Item2-2" }, { "Item3-1", "Item3-2" } };
 
         public Font fnt = new Font("Microsoft Sans Serif", 12f, FontStyle.Bold);
-        public Image anImage;
+        
         public Color clr = Color.Black;
         public Dictionary<string, string[]> aDictionary = new Dictionary<string, string[]>();
         public List<Bar> aBar = new List<Bar>()
         {
-            new Bar()
+            new Brush()
             {
                 aBarString = "This is a bar ONE"
             },
-            new Bar()
+            new Brush()
             {
                 aBarString = "This is a bar TWO"
             }
         };
     }
 
-    public class Bar2 : Bar
+    public class Brush : Bar
     {
+        public Bitmap brushPoints;
         public string aBar2String = "ThisIsABar2ThingOnly";
     }
 
-    public class Bar
-    {
-        public string aBarString = "";
+    public abstract class Bar
+    {      
+        public string aBarString;
     }
 }

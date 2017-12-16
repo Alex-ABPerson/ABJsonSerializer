@@ -55,7 +55,7 @@ namespace ABJson.GDISupport
 
         public static Bitmap ConvertTextToImage(string base64String)
         {
-            Console.WriteLine("YOY-ISH!");
+            
             //// Convert Base64 String to byte[]
             //byte[] imageBytes = Convert.FromBase64String(base64String);
             //MemoryStream ms = new MemoryStream(imageBytes, 0,
@@ -67,8 +67,14 @@ namespace ABJson.GDISupport
             //return image;
 
             byte[] bitmapBytes = Convert.FromBase64String(base64String);
+
+            Console.WriteLine();
             using (MemoryStream memoryStream = new MemoryStream(bitmapBytes))
-                return (Bitmap)Image.FromStream(memoryStream);
+            {               
+                Bitmap bmp = (Bitmap)Image.FromStream(memoryStream);
+
+                return bmp;
+            }
         }
     }
 }

@@ -253,8 +253,10 @@ namespace ABJson.GDISupport
                                 receivedCommentFirstChar = false;
 
                                 if (IsInString)
+                                {
                                     if (StringType == ch)
                                         IsInString = false;
+                                }
                                 else
                                 {
                                     IsInString = true;
